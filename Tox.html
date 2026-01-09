@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دِيمَة</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class'
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; transition: background-color 0.3s ease, color 0.3s ease; }
+        .quiz-card { min-height: 420px; transition: background-color 0.3s ease, border-color 0.3s ease; }
+        .fade-in { animation: fadeIn 0.3s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-950 min-h-screen flex flex-col items-center py-6 px-4 transition-colors duration-300">
+
+    <!-- Top Navigation Header -->
+    <header class="max-w-3xl w-full flex justify-between items-start mb-8 px-2">
+        <div class="flex flex-col text-right sm:text-left">
+            <h1 class="text-4xl font-extrabold text-slate-800 dark:text-white tracking-tight">دِيمَة</h1>
+            <p class="text-sm text-slate-500 dark:text-slate-400 mt-1 font-medium italic">Clinical Toxicology Exam Prep</p>
+        </div>
+        
+        <button onclick="toggleDarkMode()" class="p-2.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all shadow-sm">
+            <svg id="sun-icon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M12 8a4 4 0 100 8 4 4 0 000-8z" />
+            </svg>
+            <svg id="moon-icon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+            </svg>
+        </button>
+    </header>
+
+    <!-- Center Headline -->
+    <div class="max-w-3xl w-full text-center mb-10">
+        <h2 class="text-2xl md:text-3xl font-bold text-slate-800 dark:text-white tracking-tight">Toxicology Essay Questions</h2>
+        <p class="text-slate-400 dark:text-slate-500 text-sm mt-2">Exam-Oriented Question Bank</p>
+    </div>
+
+    <!-- Main Quiz Container -->
+    <main class="max-w-2xl w-full bg-white dark:bg-slate-900 rounded-3xl shadow-xl p-8 quiz-card flex flex-col justify-between border border-slate-100 dark:border-slate-800 shadow-slate-200/40 dark:shadow-none">
+        
+        <div id="quiz-content" class="fade-in">
+            <!-- Progress & Controls -->
+            <div class="flex justify-between items-center mb-8">
+                <div class="flex flex-col flex-1 max-w-[200px]">
+                    <span id="progress-text" class="text-xs font-bold tracking-widest text-blue-600 dark:text-blue-400 uppercase">Question 1 of 80</span>
+                    <div class="h-1.5 w-full bg-slate-100 dark:bg-slate-800 rounded-full mt-2 overflow-hidden">
+                        <div id="progress-bar" class="h-full bg-blue-500 transition-all duration-500" style="width: 1%"></div>
+                    </div>
+                </div>
+                <button onclick="shuffleAndReset()" class="ml-4 group flex items-center gap-2 text-xs font-bold text-slate-400 dark:text-slate-500 hover:text-blue-500 dark:hover:text-blue-400 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transition-transform group-hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    </svg>
+                    SHUFFLE
+                </button>
+            </div>
+
+            <!-- Question Area -->
+            <div class="mb-10 min-h-[140px] flex items-center">
+                <h2 id="question-text" class="text-xl md:text-2xl font-bold text-slate-800 dark:text-slate-100 leading-tight">
+                    Loading question...
+                </h2>
+            </div>
+
+            <!-- Answer Section -->
+            <div id="answer-container" class="hidden bg-slate-50 dark:bg-slate-800/50 rounded-2xl p-6 border border-slate-100 dark:border-slate-800 mb-8 fade-in">
+                <div class="flex items-center gap-2 mb-3">
+                    <span class="flex h-2 w-2 rounded-full bg-blue-500"></span>
+                    <h3 class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Clinical Answer</h3>
+                </div>
+                <p id="answer-text" class="text-slate-700 dark:text-slate-300 text-base md:text-lg leading-relaxed">
+                    Answer will appear here.
+                </p>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex flex-col sm:flex-row gap-4">
+            <button id="toggle-btn" onclick="toggleAnswer()" class="flex-1 py-4 bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 font-bold rounded-2xl hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400 transition-all active:scale-95">
+                Show Answer
+            </button>
+            <button id="next-btn" onclick="nextQuestion()" class="flex-[1.5] py-4 bg-blue-600 dark:bg-blue-600 text-white font-bold rounded-2xl hover:bg-blue-700 shadow-lg shadow-blue-200 dark:shadow-none transition-all active:scale-95 flex items-center justify-center gap-2">
+                Next Question
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                </svg>
+            </button>
+        </div>
+    </main>
+
+    <footer class="mt-12 text-slate-400 dark:text-slate-600 text-[10px] font-bold tracking-widest uppercase text-center max-w-lg">
+        Questions are derived from general principles of toxicology, emergency management, and toxidromes.
+    </footer>
+
+    <script>
+        const rawData = [
+            { q: "Define Clinical Toxicology and describe its primary role in medical practice.", a: "Clinical Toxicology is the application of toxicological principles to diagnose and treat poisoning, specifically determining if a presenting disease or injury results from chemical exposure." },
+            { q: "Discuss the hierarchy of the 'Route of Administration' and its impact on the speed of toxic response.", a: "Absorption speed follows: IV > Inhalation > IM > SC > Ingestion > Mucus membranes > Skin. Skin is slowest unless the chemical is highly lipophilic (e.g., organophosphates or carbolic acid)." },
+            { q: "Explain the physiological reason for increased susceptibility to toxins in infants and geriatric patients.", a: "Both groups exhibit decreased detoxification power due to immature (infants) or declining (geriatric) hepatic metabolic pathways and renal clearance mechanisms." },
+            { q: "Distinguish between Toxicokinetics and Toxicodynamics.", a: "Toxicokinetics is 'what the body does to the poison' (ADME: Absorption, Distribution, Metabolism, Excretion). Toxicodynamics is 'what the poison does to the body' (mechanisms of action and biological effects)." },
+            { q: "Discuss the influence of stomach content on the absorption of chlorinated insecticides.", a: "Unlike most poisons which are absorbed faster on an empty stomach, chlorinated insecticides and yellow phosphorous show rapid absorption in the presence of a fatty meal." },
+            { q: "Identify the criteria used to differentiate between 'Local Effects' and 'Systemic Effects' of a toxin.", a: "Local effects occur at the site of primary contact (e.g., skin burns, respiratory irritation). Systemic effects occur after absorption and spread, affecting distant organ systems like the CNS, CVS, or kidneys." },
+            { q: "Compare and contrast Carcinogenic and Mutagenic effects.", a: "Carcinogenic effects lead to the development of cancer (e.g., asbestos, benzene). Mutagenic effects involve genetic mutations that may or may not lead to cancer but can be passed to offspring." },
+            { q: "List three common toxic causes of coma secondary to metabolic acidosis.", a: "Methanol, Salicylates, and Iron poisoning are classic causes of coma mediated by severe metabolic acidosis." },
+            { q: "Explain the 'Coma Cocktail' composition and the rationale for each component.", a: "100ml 50% Glucose (corrects hypoglycemia), 100mg Thiamine (prevents Wernicke's encephalopathy), and 2mg Naloxone (reverses opioid toxicity)." },
+            { q: "Detail the clinical indications and contraindications for administering Flumazenil in a comatose patient.", a: "Indicated for isolated benzodiazepine overdose. Contraindicated in mixed ingestions (especially TCAs) due to the high risk of fatal seizures and arrhythmias." },
+            { q: "Outline the scoring components of the Glasgow Coma Scale (GCS) and define the range for 'Severe' coma.", a: "Scores are based on Eye opening (1-4), Verbal response (1-5), and Motor response (1-6). A score of 8 or less indicates severe coma requiring airway protection." },
+            { q: "Discuss the acute management of toxic seizures, emphasizing the primary drug of choice.", a: "Prioritize airway protection and supplemental oxygen. Diazepam (5-10mg IV) is the drug of choice due to rapid brain entry and safety profile. Avoid emesis until seizures are controlled." },
+            { q: "Define Respiratory Failure based on arterial blood gas (ABG) parameters.", a: "Respiratory failure is defined as PaO2 < 60 mmHg (hypoxemia) or PaCO2 > 45 mmHg (hypercapnia/ventilatory failure)." },
+            { q: "Differentiate between Cardiogenic and Non-Cardiogenic Pulmonary Edema in toxicology.", a: "Cardiogenic: Due to LV dysfunction (e.g., BB, CCB, TCAs). Non-Cardiogenic: Due to alveolar capillary membrane damage or surfactant destruction (e.g., corrosive fumes, heroin, salicylates)." },
+            { q: "Explain the significance of PEEP in the management of toxic pulmonary edema.", a: "Positive End Expiratory Pressure (PEEP) prevents alveolar collapse, improves oxygenation, and assists in fluid clearance from the alveoli in severe cases." },
+            { q: "Categorize the toxic causes of shock into three physiological types.", a: "1. Cardiogenic (decreased contractility, e.g., BB, CCB). 2. Decreased resistance (vasodilation, e.g., barbiturates). 3. Volume loss (fluid/blood loss, e.g., corrosives, anticoagulants)." },
+            { q: "Identify the four classic ABG changes associated with Metabolic Acidosis.", a: "Low pH (< 7.35), Low HCO3 (< 22 mEq/L), Variable PaCO2 (due to respiratory compensation), and often a high anion gap in toxic cases." },
+            { q: "Discuss the 'One Hour Rule' in gastrointestinal decontamination.", a: "Gastric emptying (emesis or lavage) is generally only effective if performed within one hour of ingestion, as most toxins pass the pylorus after this period." },
+            { q: "State the contraindications for using Syrup of Ipecac.", a: "Corrosive ingestion (risk of perforation), hydrocarbon ingestion (aspiration risk), convulsants (aspiration during fit), and unconsciousness." },
+            { q: "Detail the technique and patient positioning for Gastric Lavage.", a: "Patient in left lateral decubitus position with waist elevated. Use a large-bore tube, confirm position via air insufflation/auscultation, and use 200-400ml saline per wash until clear." },
+            { q: "Discuss the complications associated with Gastric Lavage.", a: "Bradycardia (vagal stimulation), tracheal insertion, aspiration pneumonia (if airway unprotected), and electrolyte imbalance (hyponatremia if tap water is used)." },
+            { q: "List five toxic substances that are NOT adsorbed by Activated Charcoal.", a: "Iron, Alcohols (Methanol/Ethanol), Cyanide, Lead, and Mercury." },
+            { q: "Explain the mechanism and indications for Multiple Dose Activated Charcoal (MDAC).", a: "Enhances elimination of drugs with enterohepatic circulation (Digoxin, TCA) or those that diffuse from blood to gut ('GI Dialysis', e.g., Theophylline)." },
+            { q: "Describe the principle of Whole Bowel Irrigation (WBI) and its primary indications.", a: "Uses non-absorbable PEG solution (1.5-2L/h) to flush the GIT. Indicated for iron, lead, disk batteries, and sustained-release preparations." },
+            { q: "Discuss the technique of Urine Alkalinization and the drugs it is effective for.", a: "Uses Sodium Bicarbonate to raise urine pH to 7.5-8.0, trapping weak acids in their ionized form. Primarily used for Salicylates and Phenobarbitone." },
+            { q: "Identify the criteria for a toxin to be effectively cleared by Hemodialysis.", a: "Small molecular weight, low protein binding, small volume of distribution (Vd), and water solubility (e.g., Alcohols, Lithium, Salicylates)." },
+            { q: "Contrast Hemodialysis with Hemoperfusion.", a: "Hemodialysis uses a semi-permeable membrane and concentration gradients. Hemoperfusion passes blood through a charcoal cartridge; it is effective for large, protein-bound, or lipid-soluble toxins." },
+            { q: "Define the classic 'Anticholinergic Toxidrome'.", a: "Mydriasis (blind as a bat), dry skin/membranes (dry as a bone), mental status changes (mad as a hatter), flushed skin (red as a beet), and hyperthermia (hot as a hare)." },
+            { q: "Detail the 'Cholinergic Toxidrome' using the SLUDGE acronym.", a: "Salivation, Lacrimation, Urination, Diarrhea, Gastrointestinal distress, and Emesis (plus miosis and bradycardia)." },
+            { q: "What are the three hallmarks of an Opioid Toxidrome?", a: "Triad: Pinpoint pupils (miosis), altered mental status (coma), and severe respiratory depression." },
+            { q: "Discuss the pharmacological action of Glucagon in toxicology.", a: "Used as an antidote for Beta-blocker overdose; it increases intracellular cAMP directly, bypassing blocked beta-receptors to improve cardiac contractility." },
+            { q: "Explain the mechanism of action of Sodium Thiosulfate in Cyanide poisoning.", a: "It acts as a sulfur donor, facilitating the enzymatic conversion of cyanide to non-toxic thiocyanate by the enzyme rhodanese." },
+            { q: "Detail the 'Dying Declaration' protocol for a suspected poisoning victim.", a: "If death is imminent, a declaration should be recorded in the presence of a magistrate or doctor, serving as vital legal evidence in homicidal/suicidal cases." },
+            { q: "Identify five clinical indications for admitting a patient to the ICU following poisoning.", a: "1. Need for intubation. 2. Active seizures. 3. Unresponsiveness. 4. PaCO2 > 45 mmHg. 5. Cardiac arrhythmias or hypotension." },
+            { q: "Discuss the medico-legal importance of the 'Chain of Custody'.", a: "Ensures that forensic samples (blood, gastric wash) are documented from collection to analysis, preventing evidence tampering or loss in legal proceedings." },
+            { q: "Analyze the 'SHAW' mnemonic for toxic mydriasis (dilated pupils).", a: "Sympathomimetics, Hallucinogens, Anticholinergics, and Withdrawal (from opioids/sedatives)." },
+            { q: "Explain why 'Pinpoint Pupils' (miosis) may occur in non-toxic conditions.", a: "Miosis is a classic sign of pontine hemorrhage; it is distinguished from toxic causes (opiates) by lack of response to naloxone and confirmation via MRI/CT." },
+            { q: "Discuss the importance of 'Cumulative Toxicity' with digitalis.", a: "Repeated small doses can accumulate if metabolism is slow, eventually reaching toxic levels that manifest as a single large acute overdose." },
+            { q: "Compare and contrast 'Chemical Antidotes' with 'Competitive Antidotes'.", a: "Chemical: React directly with poison to neutralize it (e.g., charcoal). Competitive: Compete for receptor binding sites (e.g., Naloxone, Flumazenil)." },
+            { q: "Outline the management of toxic hyperthermia.", a: "Standard antipyretics are ineffective. Requires external cooling (ice packs, tepid sponging) and control of muscle activity (benzodiazepines for seizures/agitation)." },
+            { q: "Identify the ECG findings suggestive of Tricyclic Antidepressant (TCA) toxicity.", a: "Prolonged QRS duration (> 0.10s or 0.12s), arrhythmias, and secondary/tertiary A-V blocks." },
+            { q: "What is the primary risk of using syrup of Ipecac in a patient with a 'Deteriorating conscious level'?", a: "High risk of aspiration pneumonia, as the patient may lose their gag reflex or become comatose while vomiting." },
+            { q: "Define 'Professional Misconduct' in the context of toxicology.", a: "Failure to inform legal authorities of suspected poisoning or tampering with evidence (wrong labeling/loss of samples)." },
+            { q: "List three non-toxic household exposures common in pediatrics.", a: "Vitamins without iron, bleach (5%), and most household plants (which usually cause only mild oral burns)." },
+            { q: "Explain the mechanism of 'Rhabdomyolysis' in toxicology and how to investigate it.", a: "Muscle breakdown due to prolonged coma/immobility or hyperthermia; investigated via serum Creatinine Kinase (CK) levels." },
+            { q: "Discuss the role of 'Chelating Agents' in heavy metal poisoning.", a: "They bind heavy metals (Arsenic, Lead, Mercury) to form stable, water-soluble complexes that are easily excreted by the kidneys (e.g., EDTA, BAL)." },
+            { q: "What are the 'C's' of initial stabilization, and what is the priority?", a: "Circulation: Priority is taking pulse (volume/rate/rhythm), establishing IV access, and correcting hypotension via fluids/inotropics." },
+            { q: "Analyze the risk of 'Reflex Evacuation' during gastric lavage.", a: "If fluid introduced into the stomach is not fully removed, it can cause distension and trigger the pylorus to open, pushing poison into the duodenum." },
+            { q: "Identify the physiological change in 'Toxic Hypoxia' caused by Carbon Monoxide.", a: "CO binds to hemoglobin with high affinity, forming carboxyhemoglobin (COHb), which prevents oxygen delivery to tissues." },
+            { q: "Explain the 'Gastrointestinal Dialysis' effect of MDAC.", a: "Creating a concentration gradient where the toxin moves from the mesenteric blood into the gut lumen to be adsorbed by charcoal, effectively clearing systemic poison." }
+        ];
+
+        let quizItems = [];
+        let currentIndex = 0;
+        let showingAnswer = false;
+
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function shuffleAndReset() {
+            quizItems = shuffle([...rawData]);
+            currentIndex = 0;
+            showingAnswer = false;
+            updateUI();
+        }
+
+        function toggleAnswer() {
+            showingAnswer = !showingAnswer;
+            const container = document.getElementById('answer-container');
+            const btn = document.getElementById('toggle-btn');
+            
+            if (showingAnswer) {
+                container.classList.remove('hidden');
+                btn.innerText = "Hide Answer";
+            } else {
+                container.classList.add('hidden');
+                btn.innerText = "Show Answer";
+            }
+        }
+
+        function nextQuestion() {
+            if (currentIndex < quizItems.length - 1) {
+                currentIndex++;
+                showingAnswer = false;
+                updateUI();
+            } else {
+                if(confirm("Exam Complete! Reshuffle and start over?")) {
+                    shuffleAndReset();
+                }
+            }
+        }
+
+        function updateUI() {
+            const item = quizItems[currentIndex];
+            const content = document.getElementById('quiz-content');
+            
+            content.classList.remove('fade-in');
+            void content.offsetWidth;
+            content.classList.add('fade-in');
+
+            const progress = ((currentIndex + 1) / quizItems.length) * 100;
+            document.getElementById('progress-bar').style.width = `${progress}%`;
+            document.getElementById('progress-text').innerText = `Question ${currentIndex + 1} of ${quizItems.length}`;
+            document.getElementById('question-text').innerText = item.q;
+            document.getElementById('answer-text').innerText = item.a;
+            
+            document.getElementById('answer-container').classList.add('hidden');
+            document.getElementById('toggle-btn').innerText = "Show Answer";
+        }
+
+        function toggleDarkMode() {
+            const html = document.documentElement;
+            const moonIcon = document.getElementById('moon-icon');
+            const sunIcon = document.getElementById('sun-icon');
+            
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                moonIcon.classList.remove('hidden');
+                sunIcon.classList.add('hidden');
+                localStorage.setItem('theme', 'light');
+            } else {
+                html.classList.add('dark');
+                moonIcon.classList.add('hidden');
+                sunIcon.classList.remove('hidden');
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        function initTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            const html = document.documentElement;
+            const moonIcon = document.getElementById('moon-icon');
+            const sunIcon = document.getElementById('sun-icon');
+
+            if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                html.classList.add('dark');
+                moonIcon.classList.add('hidden');
+                sunIcon.classList.remove('hidden');
+            } else {
+                html.classList.remove('dark');
+                moonIcon.classList.remove('hidden');
+                sunIcon.classList.add('hidden');
+            }
+        }
+
+        window.onload = () => {
+            initTheme();
+            shuffleAndReset();
+        };
+    </script>
+</body>
+</html>
