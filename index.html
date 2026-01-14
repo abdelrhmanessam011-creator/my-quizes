@@ -47,7 +47,7 @@
                     </div>
                     <div class="block">
                         <h1 class="text-sm sm:text-lg font-bold text-slate-800 dark:text-slate-100 leading-tight">Informatics Quiz</h1>
-                        <p class="hidden sm:block text-xs text-slate-500 dark:text-slate-400 font-medium">130 Questions Bank</p>
+                        <p class="hidden sm:block text-xs text-slate-500 dark:text-slate-400 font-medium">165 Questions Master Bank</p>
                     </div>
                 </div>
 
@@ -71,7 +71,7 @@
             <div id="quiz-card" class="bg-white dark:bg-slate-900 rounded-2xl sm:rounded-3xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden animate-fade-in">
                 <div class="px-5 py-3 bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center">
                     <span class="text-[10px] sm:text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">
-                        Q <span id="current-q-num" class="text-indigo-600 dark:text-indigo-400">1</span> / 130
+                        Q <span id="current-q-num" class="text-indigo-600 dark:text-indigo-400">1</span> / 165
                     </span>
                     <span class="text-xs font-mono font-bold text-slate-400 dark:text-slate-500 flex items-center gap-1.5">
                         <i class="far fa-clock"></i>
@@ -102,7 +102,7 @@
                 </div>
                 <div class="bg-white dark:bg-slate-900 p-3 sm:p-5 rounded-xl sm:rounded-2xl border border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center sm:items-start gap-1 sm:gap-4 shadow-sm">
                     <div class="bg-indigo-50 dark:bg-indigo-900/30 p-2 sm:p-3 rounded-lg text-indigo-600"><i class="fas fa-list-ol text-sm sm:text-xl"></i></div>
-                    <div class="text-center sm:text-left"><p class="text-[9px] sm:text-xs font-bold text-slate-500 uppercase">Left</p><p id="remaining-display" class="text-sm sm:text-2xl font-black text-slate-900 dark:text-slate-100 leading-none">129</p></div>
+                    <div class="text-center sm:text-left"><p class="text-[9px] sm:text-xs font-bold text-slate-500 uppercase">Left</p><p id="remaining-display" class="text-sm sm:text-2xl font-black text-slate-900 dark:text-slate-100 leading-none">164</p></div>
                 </div>
                 <div class="bg-white dark:bg-slate-900 p-3 sm:p-5 rounded-xl sm:rounded-2xl border border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center sm:items-start gap-1 sm:gap-4 shadow-sm">
                     <div class="bg-amber-50 dark:bg-amber-900/30 p-2 sm:p-3 rounded-lg text-amber-600"><i class="fas fa-percentage text-sm sm:text-xl"></i></div>
@@ -117,13 +117,13 @@
                 <div class="bg-indigo-600 dark:bg-indigo-500 p-6 sm:p-8 text-center text-white">
                     <i class="fas fa-award text-5xl sm:text-6xl mb-4 text-white/90"></i>
                     <h1 class="text-2xl sm:text-3xl font-bold">Quiz Complete!</h1>
-                    <p class="text-indigo-100 text-sm mt-2">130 Questions Bank Mastered</p>
+                    <p class="text-indigo-100 text-sm mt-2">165 Questions Bank Mastered</p>
                 </div>
                 <div class="p-6 sm:p-8 space-y-4 sm:space-y-6">
                     <div class="grid grid-cols-2 gap-4">
                         <div class="bg-indigo-50 dark:bg-slate-800 p-4 rounded-2xl text-center border border-indigo-100 dark:border-slate-700">
                             <p class="text-indigo-600 dark:text-indigo-400 text-[10px] font-bold uppercase mb-1">Total Score</p>
-                            <p id="final-score" class="text-2xl sm:text-3xl font-bold text-indigo-900 dark:text-slate-100">0 / 130</p>
+                            <p id="final-score" class="text-2xl sm:text-3xl font-bold text-indigo-900 dark:text-slate-100">0 / 165</p>
                         </div>
                         <div class="bg-indigo-50 dark:bg-slate-800 p-4 rounded-2xl text-center border border-indigo-100 dark:border-slate-700">
                             <p class="text-indigo-600 dark:text-indigo-400 text-[10px] font-bold uppercase mb-1">Accuracy</p>
@@ -140,7 +140,7 @@
         <footer class="max-w-4xl mx-auto py-8 sm:py-12 text-center text-slate-400 dark:text-slate-600 text-[10px] sm:text-sm font-semibold px-4 theme-transition">
             <div class="flex items-center justify-center gap-2 mb-2">
                 <i class="fas fa-book-open opacity-50"></i>
-                <span>Medical Informatics Quiz Bank Solution</span>
+                <span>Medical Informatics Unified Quiz Bank</span>
             </div>
             <p>© 2026 Academic Resources</p>
         </footer>
@@ -148,6 +148,7 @@
 
     <script>
         const QUESTIONS_DATA = [
+            // Bank 1: Questions 1-130
             { id: 1, question: "A group of procedures and different elements that work together in order to complete a task.", options: ["Input", "system", "Output", "Processing"], answer: 1 },
             { id: 2, question: "Involves capturing and assembling elements that enters the system to be processed.", options: ["Processing", "Output", "Input", "system"], answer: 2 },
             { id: 3, question: "Involves transformation processes that convert input into output", options: ["Output", "system", "Input", "Processing"], answer: 3 },
@@ -185,52 +186,52 @@
             { id: 35, question: "Provide information in form of pre-specified reports to support business decision making:", options: ["Enterprise collaboration", "Process control", "Management info systems", "Transaction processing"], answer: 2 },
             { id: 36, question: "Sales analysis, production performance, and cost reporting systems are examples of:", options: ["Management info systems", "Transaction processing", "Enterprise collaboration", "Process control"], answer: 0 },
             { id: 37, question: "Provide interactive ad hoc support for decision-making processes:", options: ["Process control", "Enterprise collaboration", "Decision support systems", "Transaction processing"], answer: 2 },
-            { id: 38, question: "Provide critical info source tailored to information needs of executives:", options: ["Executive info systems", "Process control", "Decision support", "Transaction processing"], answer: 0 },
+            { id: 38, question: "Provide critical information tailored to information needs of executives:", options: ["Executive info systems", "Process control", "Decision support", "Transaction processing"], answer: 0 },
             { id: 39, question: "Product pricing, profitability forecasting, and risk analysis systems are examples of:", options: ["Decision support systems", "Transaction processing", "Enterprise collaboration", "Process control"], answer: 0 },
             { id: 40, question: "Systems for easy access to analyses of business performance and competitor actions:", options: ["Decision support", "Transaction processing", "Process control", "Executive info systems"], answer: 3 },
             { id: 41, question: "Knowledge-based systems providing experienced advice and acting as proficiency consultants:", options: ["Enterprise collaboration", "Decision support", "Expert systems", "Transaction processing"], answer: 2 },
             { id: 42, question: "Credit application advisor and diagnostic maintenance systems are examples of:", options: ["Expert systems", "Transaction processing", "Enterprise collaboration", "Decision support"], answer: 0 },
-            { id: 43, question: "Knowledge-based systems supporting creation and dissemination of business knowledge:", options: ["Enterprise collaboration", "Decision support", "Knowledge management systems", "Transaction processing"], answer: 2 },
+            { id: 43, question: "Knowledge-based systems supporting creation, organization, and dissemination of business knowledge:", options: ["Enterprise collaboration", "Decision support", "Knowledge management systems", "Transaction processing"], answer: 2 },
             { id: 44, question: "Intranet access to best business practices and customer problem resolution systems:", options: ["Knowledge management systems", "Transaction processing", "Enterprise collaboration", "Decision support"], answer: 0 },
-            { id: 45, question: "Support operations providing strategic products, services and competitive advantage:", options: ["Strategic info systems", "Expert Systems", "Enterprise collaboration", "Decision support"], answer: 0 },
+            { id: 45, question: "Support operations providing strategic competitive advantage:", options: ["Strategic info systems", "Expert Systems", "Enterprise collaboration", "Decision support"], answer: 0 },
             { id: 46, question: "Online stock trading, shipment tracking, and E-commerce systems are examples of:", options: ["Management info", "Transaction processing", "Enterprise collaboration", "Strategic info systems"], answer: 3 },
-            { id: 47, question: "Systems supporting applications in accounting, finance, marketing, and human resource management:", options: ["Functional business systems", "Decision support", "Management info", "Transaction processing"], answer: 0 },
+            { id: 47, question: "Systems supporting applications in accounting, finance, marketing, and HR:", options: ["Functional business systems", "Decision support", "Management info", "Transaction processing"], answer: 0 },
             { id: 48, question: "Support operational and managerial applications of the basic business functions of a company:", options: ["Enterprise collaboration", "Decision support", "Management info", "Functional business systems"], answer: 3 },
             { id: 49, question: "Designed to correct a lack of communication among functional area systems:", options: ["ERP", "Business Intelligence", "SCM", "CRM"], answer: 0 },
-            { id: 50, question: "Staff within IT department includes system administrators, software engineers, and technicians.", options: ["Administrators", "Software engineers", "Technicians", "All of the above"], answer: 3 },
-            { id: 51, question: "Set of technologies for transmitting and managing health information:", options: ["PHR", "HIT", "EHR", "MIS"], answer: 1 },
-            { id: 52, question: "Collects info about patients affected by a particular condition:", options: ["CPOE", "E-Prescribing", "Patient Registries", "Medical kiosks"], answer: 2 },
+            { id: 50, question: "Staff within IT department includes administrators, software engineers, and technicians.", options: ["Administrators", "Software engineers", "Technicians", "All of the above"], answer: 3 },
+            { id: 51, question: "Consists of an enormously diverse set of technologies for managing health information:", options: ["PHR", "HIT", "EHR", "MIS"], answer: 1 },
+            { id: 52, question: "Collects info about patients who are affected by a particular condition:", options: ["CPOE", "E-Prescribing", "Patient Registries", "Medical kiosks"], answer: 2 },
             { id: 53, question: "Patient Registries include self-reported, professional reported, or combination info.", options: ["Self-reported", "Professional", "Combination", "All of the above"], answer: 3 },
             { id: 54, question: "National registries are set-up for conditions where there are enough patients in the country.", options: ["True", "False"], answer: 0 },
             { id: 55, question: "International registries are developed for rare and 'ultra-rare' conditions.", options: ["Common", "Rare", "Ultra-rare", "Rare/Ultra-rare"], answer: 2 },
-            { id: 56, question: "Process of entering instructions electronically sending orders and treatment:", options: ["CPOE", "E-Prescribing", "Medical kiosks", "None"], answer: 0 },
+            { id: 56, question: "The process of a professional entering instructions electronically sending orders:", options: ["CPOE", "E-Prescribing", "Medical kiosks", "None"], answer: 0 },
             { id: 57, question: "CPOE can enhance patient safety by reducing medication errors.", options: ["True", "False"], answer: 0 },
             { id: 58, question: "In CPOE, orders can be entered into workstation, laptop, or mobile device.", options: ["Workstation", "Laptop", "Mobile", "All of the above"], answer: 3 },
             { id: 59, question: "The CPOE system can accept and manage orders at point of care through various devices.", options: ["True", "False"], answer: 0 },
-            { id: 60, question: "Computer-based electronic generation and filling of a medical prescription:", options: ["CPOE", "E-Prescribing", "Medical kiosks", "None"], answer: 1 },
-            { id: 61, question: "E-prescribing reduces prescribing errors and improves health.", options: ["Reduce prescribing errors", "Slow receipt", "Increase work", "All"], answer: 0 },
+            { id: 60, question: "The computer-based electronic generation and filling of a medical prescription:", options: ["CPOE", "E-Prescribing", "Medical kiosks", "None"], answer: 1 },
+            { id: 61, question: "E-prescribing can improve health and reduce costs because it can reduce errors.", options: ["Reduce errors", "Slow receipt", "Increase work", "All"], answer: 0 },
             { id: 62, question: "Diagnostic kiosks address shortages of physicians in rural areas.", options: ["True", "False"], answer: 0 },
-            { id: 63, question: "Solution through which patients check and get instant health information.", options: ["Self-diagnosis Kiosk", "Check-in Kiosks", "Remote kiosks", "All"], answer: 0 },
+            { id: 63, question: "Solution through which patients can check and get instant health information.", options: ["Self-diagnosis Kiosk", "Check-in Kiosks", "Remote kiosks", "All"], answer: 0 },
             { id: 64, question: "Actual steps necessary to obtain, retrieve, and send data computer to computer:", options: ["Applications", "Processes", "Devices", "HIPAA"], answer: 1 },
-            { id: 65, question: "Providers must comply with this in exchange of personal health information:", options: ["Applications", "Devices", "Processes", "HIPAA"], answer: 3 },
-            { id: 66, question: "Various hardware components that make HIT work:", options: ["Devices", "Processes", "Applications", "HIPAA"], answer: 0 },
-            { id: 67, question: "Electronic record of info on an individual managed within one organization:", options: ["PHR", "EHR", "EMR", "None"], answer: 2 },
-            { id: 68, question: "Electronic record of info on an individual managed across more than one organization:", options: ["PHR", "EHR", "EMR", "All"], answer: 1 },
-            { id: 69, question: "Electronic record of info on an individual managed, shared, and controlled by the individual:", options: ["EMR", "PHR", "EHR", "All"], answer: 1 },
-            { id: 70, question: "Electronic movement of health info among organizations based on standards:", options: ["HIO", "HIE", "HIT", "None"], answer: 1 },
+            { id: 65, question: "Healthcare providers must comply with this in exchange of personal health info:", options: ["Applications", "Devices", "Processes", "HIPAA"], answer: 3 },
+            { id: 66, question: "The various hardware components that make HIT work:", options: ["Devices", "Processes", "Applications", "HIPAA"], answer: 0 },
+            { id: 67, question: "Record on an individual managed within one health care organization:", options: ["PHR", "EHR", "EMR", "None"], answer: 2 },
+            { id: 68, question: "Record on an individual managed across more than one health care organization:", options: ["PHR", "EHR", "EMR", "All"], answer: 1 },
+            { id: 69, question: "Record on an individual managed, shared, and controlled by the individual:", options: ["EMR", "PHR", "EHR", "All"], answer: 1 },
+            { id: 70, question: "Electronic movement of health info among organizations according to standards:", options: ["HIO", "HIE", "HIT", "None"], answer: 1 },
             { id: 71, question: "Standards necessary for HIT systems to communicate in a uniform manner:", options: ["Coding", "Messaging", "Communications", "All of the above"], answer: 3 },
             { id: 72, question: "HL7, ADT, NCPDP, X12, and DICOM are examples of messaging standards.", options: ["Coding", "Messaging", "Communications", "All"], answer: 1 },
-            { id: 73, question: "Form and structure required for information to move from one system to another:", options: ["Coding", "Messaging", "Communications", "All"], answer: 1 },
-            { id: 74, question: "Used to communicate events about a patient to different systems within a hospital.", options: ["ADT messages", "LOINC", "HL7", "All"], answer: 0 },
+            { id: 73, question: "Form and structure required for information to move from system to system:", options: ["Coding", "Messaging", "Communications", "All"], answer: 1 },
+            { id: 74, question: "Used to communicate events about a patient to different clinical systems in a hospital.", options: ["ADT messages", "LOINC", "HL7", "All"], answer: 0 },
             { id: 75, question: "International standards for transfer of clinical and administrative data:", options: ["LOINC", "HL7", "ADT", "None"], answer: 1 },
             { id: 76, question: "Universal standard for laboratory test names.", options: ["ADT", "HL7", "None", "LOINC"], answer: 3 },
-            { id: 77, question: "Ability of a system to work with or use parts of another system:", options: ["Interoperability", "Security", "Exchangeability", "None"], answer: 0 },
-            { id: 78, question: "HIT has the following benefits except:", options: ["Reduced paperwork", "Rapid sharing", "Better follow-up", "Increase tests"], answer: 3 },
-            { id: 79, question: "System designed for collecting and managing clinical information for healthcare delivery:", options: ["CIS", "DSS", "Collaboration", "MIS"], answer: 0 },
-            { id: 80, question: "Provides tools to aid correct clinical decisions using computerized knowledge:", options: ["Expert systems", "TPS", "CDSS", "MIS"], answer: 2 },
-            { id: 81, question: "CIS can provide convenient access to medical records at all points of care.", options: ["True", "False"], answer: 0 },
-            { id: 82, question: "CIS has a negative effect on drug dosing and leads to adverse interactions.", options: ["True", "False"], answer: 1 },
-            { id: 83, question: "Barriers to CIS include privacy, security, cost, and resistance.", options: ["Privacy/Security", "Cost", "Resistance", "All of the above"], answer: 3 },
+            { id: 77, question: "The ability of a system to work with or use parts of another system:", options: ["Interoperability", "Security", "Exchangeability", "None"], answer: 0 },
+            { id: 78, question: "HIT has the following benefits except :", options: ["Reduced paperwork", "Rapid sharing", "Better follow-up", "increase tests"], answer: 3 },
+            { id: 79, question: "Computer-based system designed for managing clinical info for care delivery:", options: ["CIS", "DSS", "Collaboration", "MIS"], answer: 0 },
+            { id: 80, question: "Provides tools to acquire and display information to aid evidence-based decisions:", options: ["Expert systems", "TPS", "CDSS", "MIS"], answer: 2 },
+            { id: 81, question: "Clinical Information Systems provide convenient access to records at all points of care.", options: ["True", "False"], answer: 0 },
+            { id: 82, question: "Clinical Information Systems has negative effect on drug dosing and interactions.", options: ["True", "False"], answer: 1 },
+            { id: 83, question: "Barriers to CIS include privacy, security, cost, and clinician resistance.", options: ["Privacy/Security", "Cost", "Resistance", "All of the above"], answer: 3 },
             { id: 84, question: "The PHR is the larger system that includes the EHR and EMR.", options: ["True", "False"], answer: 1 },
             { id: 85, question: "Paper record limitations:", options: ["legibility", "structure", "A and B", "Environment"], answer: 2 },
             { id: 86, question: "EHR problem summary lists outline illnesses, surgeries, and allergies.", options: ["Illnesses", "Surgeries", "Allergies", "All of the above"], answer: 3 },
@@ -238,18 +239,18 @@
             { id: 88, question: "Comprehensive EHR features include education content and practice guidelines.", options: ["Educational content", "Guidelines", "Handouts", "All of the above"], answer: 3 },
             { id: 89, question: "Option where software and patient data reside on a remote web server:", options: ["centralized", "ASP", "CDS", "CPOE"], answer: 1 },
             { id: 90, question: "EHRs are also known as EMRs, CMRs, and ECIS.", options: ["EMRs", "CMRs", "ECIS", "All of the above"], answer: 3 },
-            { id: 91, question: "CDSS include alerts, reminders and clinical practice guidelines.", options: ["Encounter", "Messaging", "CDSS", "All"], answer: 2 },
-            { id: 92, question: "CDSS matches patient characteristics to a computerized knowledge base.", options: ["True", "False"], answer: 0 },
-            { id: 93, question: "Number of levels of CDSSs:", options: ["One", "Four", "Seven", "Ten"], answer: 1 },
-            { id: 94, question: "Company that sells EMR, practice management and PHR software:", options: ["UpToDate", "IConsult", "eClinical Works", "None"], answer: 2 },
-            { id: 95, question: "Primary care info database available for integration into EHRs:", options: ["IConsult", "ICD-9", "Infobuttons", "None"], answer: 0 },
+            { id: 91, question: "Include alerts, reminders and clinical practice guidelines:", options: ["Encounter", "Messaging", "CDSS", "All"], answer: 2 },
+            { id: 92, question: "CDSS matches characteristics of individual patients to a computerized knowledge base.", options: ["True", "False"], answer: 0 },
+            { id: 93, question: "The number of levels of CDSSs are:", options: ["One", "Four", "Seven", "Ten"], answer: 1 },
+            { id: 94, question: "Company that sells EMR, practice management and PHR software (Massachusetts-based):", options: ["UpToDate", "IConsult", "eClinical Works", "None"], answer: 2 },
+            { id: 95, question: "Primary care info database offered by Elsevier for integration into EHRs:", options: ["IConsult", "ICD-9", "Infobuttons", "None"], answer: 0 },
             { id: 96, question: "Standard designed to promote international comparability in mortality statistics:", options: ["IConsult", "Infobuttons", "ICD-9", "None"], answer: 2 },
             { id: 97, question: "Online knowledge resources tailored to patient care clicked via:", options: ["Infobuttons", "ICD-9", "IConsult", "None"], answer: 0 },
             { id: 98, question: "Pre-established instructions related to a symptom or diagnoses:", options: ["Order sets", "Radiology CDS", "Laboratory CDS", "Differential Diagnoses"], answer: 0 },
-            { id: 99, question: "Alerts clinicians to test indications and price:", options: ["Laboratory CDS", "Differential Diagnoses", "Radiology CDS", "Order sets"], answer: 0 },
+            { id: 99, question: "Clinical decisions support that alerts to test indications and price:", options: ["Laboratory CDS", "Differential Diagnoses", "Radiology CDS", "Order sets"], answer: 0 },
             { id: 100, question: "CDS to try to improve ordering imaging studies:", options: ["Laboratory CDS", "Differential Diagnoses", "Order sets", "Radiology CDS"], answer: 3 },
-            { id: 101, question: "Generates analysis based on patient signs and laboratory results:", options: ["Order sets", "Laboratory CDS", "Differential Diagnoses", "Radiology CDS"], answer: 2 },
-            { id: 102, question: "OpenVista and WorldVistA are open-source EHRs.", options: ["Comprehensive", "Low Cost", "open-source", "None"], answer: 2 },
+            { id: 101, question: "Assists by generating analysis based on user input of signs and symptoms:", options: ["Order sets", "Laboratory CDS", "Differential Diagnoses", "Radiology CDS"], answer: 2 },
+            { id: 102, question: "OpenVista, WorldVistA, and PracticeFusion are open-source EHRs.", options: ["Comprehensive", "Low Cost", "open-source", "None"], answer: 2 },
             { id: 103, question: "Medical Office Online, SoapWare, and E-MDS are examples of Low Cost EHR.", options: ["Low Cost", "Open-source", "Comprehensive", "None"], answer: 0 },
             { id: 104, question: "AHLTA, eClinicalWorks, and VISTA are examples of Comprehensive EHR.", options: ["Comprehensive", "Low Cost", "Open-source", "None"], answer: 0 },
             { id: 105, question: "Barriers to EHR adoption include privacy, data entry challenges, and integration difficulties.", options: ["Privacy", "Entry", "Integration", "All of the above"], answer: 3 },
@@ -268,16 +269,53 @@
             { id: 118, question: "Wireless networks are based on IEEE 802.11 standard:", options: ["GAN", "PAN", "LAN", "WAN"], answer: 2 },
             { id: 119, question: "Mode utilizing a wireless router or access point:", options: ["Infrastructure", "Peer-to-peer", "Client-server", "None"], answer: 0 },
             { id: 120, question: "The Internet could be considered as a Global Area Network (GAN).", options: ["GAN", "PAN", "WAN", "LAN"], answer: 0 },
-            { id: 121, question: "Top search worries arranged as Cost, Quality, Medical errors.", options: ["Quality/Cost/Errors", "Cost/Quality/Errors", "Errors/Cost/Quality", "Cost/Errors/Quality"], answer: 1 },
+            { id: 121, question: "Top search worries: Cost, Quality, Medical errors.", options: ["Quality/Cost/Errors", "Cost/Quality/Errors", "Errors/Cost/Quality", "Cost/Errors/Quality"], answer: 1 },
             { id: 122, question: "Provides patient with a simple differential diagnosis of what might be wrong:", options: ["Calculators", "Care Pages", "Symptom checker tool", "None"], answer: 2 },
-            { id: 123, question: "Web-based programs that patients can access for health related services:", options: ["Web applications", "Web portals", "Web servers", "None"], answer: 1 },
+            { id: 123, question: "Web-based programs that patients can access for health services:", options: ["Web applications", "Web portals", "Web servers", "None"], answer: 1 },
             { id: 124, question: "The info that will follow you even when there is a job or insurer change:", options: ["Auto-populated", "Portable", "Interoperable", "None"], answer: 1 },
             { id: 125, question: "Mean that clinical and test results would be inputted automatically:", options: ["Portable", "Auto-populated", "Interoperable", "None"], answer: 1 },
             { id: 126, question: "Means that PHR format can be shared among disparate partners:", options: ["Auto-populated", "Portable", "Interoperable", "None"], answer: 2 },
             { id: 127, question: "PHR connected to one platform and not interoperable:", options: ["Standalone", "Networked", "Untethered", "Tethered"], answer: 3 },
-            { id: 128, question: "An XML-based standard for the movement of 'documents' between clinical applications.", options: ["CCD", "CCR", "EMR", "EHR"], answer: 1 },
-            { id: 129, question: "Result of collaborative effort between HL7 and ASTM to harmonize data format:", options: ["CCR", "EHR", "CCD", "EMR"], answer: 2 },
-            { id: 130, question: "Electronic visits tele-health remotely delivered care remotely.", options: ["True", "False"], answer: 0 }
+            { id: 128, question: "XML standard for movement of 'documents' between clinical applications:", options: ["CCD", "CCR", "EMR", "EHR"], answer: 1 },
+            { id: 129, question: "Collaborative effort between HL7 and ASTM to harmonize data format:", options: ["CCR", "EHR", "CCD", "EMR"], answer: 2 },
+            { id: 130, question: "Electronic visits tele-health delivered care remotely.", options: ["True", "False"], answer: 0 },
+
+            // Bank 2 (Complete 35 Questions from File 2)
+            { id: 131, question: "Medical informatics is the intersection of information science, computer science, and health care?", options: ["HIM", "HIE", "HIT", "Health informatics"], answer: 3 },
+            { id: 132, question: "Academic field primarily concerned with analysis, collection, manipulation, storage, and retrieval of information:", options: ["Computer science", "Health care science", "Information science", "None"], answer: 2 },
+            { id: 133, question: "The prevention, treatment, and management of illness and promotion of health through medical/allied services is:", options: ["Computer science", "Health care science", "Information science", "None"], answer: 1 },
+            { id: 134, question: "Medical informatics is also called all of the following except:", options: ["Clinical informatics", "Nursing informatics", "Bioinformatics", "Healthcare informatics"], answer: 2 },
+            { id: 135, question: "Defined as the analysis of biological information using computers and statistical techniques:", options: ["Clinical informatics", "Nursing informatics", "Bioinformatics", "Healthcare informatics"], answer: 2 },
+            { id: 136, question: "The world's first professional informatics organization was developed in:", options: ["1970", "1960", "1949", "1980"], answer: 2 },
+            { id: 137, question: "The world's first specialized university departments and informatics training programs were developed in:", options: ["1970s", "1960s", "1950s", "1980s"], answer: 2 },
+            { id: 138, question: "In which period did Health Informatics education and infrastructure become a top priority?", options: ["1970s", "1960s", "1950s", "1980s"], answer: 3 },
+            { id: 139, question: "ASTM established the first standards in healthcare data reporting which include lab data and message exchange.", options: ["Lab data", "Message exchange", "Security", "All of the above"], answer: 3 },
+            { id: 140, question: "Health Informatics professionals still face the challenge of achieving interoperability between formats.", options: ["Right", "wrong"], answer: 0 },
+            { id: 141, question: "Healthcare organizations are forced to utilize ready-made solutions to make dissimilar systems compatible.", options: ["Right", "wrong"], answer: 0 },
+            { id: 142, question: "Period which played an important role in laying the foundation of 'new emerging information technology':", options: ["1975-1990", "1990-2000", "1950-1975", "None"], answer: 2 },
+            { id: 143, question: "The period 1975-1990 can be characterized by national alliances and emerging bioinformatics schools.", options: ["First alliances", "Emerging schools", "Specific conferences", "All of the above"], answer: 3 },
+            { id: 144, question: "Governments created national strategies for implementation of medical bioinformatics in which period?", options: ["1975-1990", "1990-2000", "1950-1975", "None"], answer: 1 },
+            { id: 145, question: "Cooperation between European countries and USA to keep MI research successful happened in:", options: ["1975-1990", "2000-2010", "1950-1975", "None"], answer: 0 },
+            { id: 146, question: "The data pyramid (DIKW) typically consists of how many levels?", options: ["Two levels", "Three levels", "Four Levels", "Five Levels"], answer: 2 },
+            { id: 147, question: "The largest amount of data VOLUME in the data pyramid exists in:", options: ["Base of the pyramid", "Middle of the pyramid", "Top of the pyramid", "All"], answer: 0 },
+            { id: 148, question: "The largest amount of data VALUE in the data pyramid exists in:", options: ["Base", "Middle", "Top", "All"], answer: 2 },
+            { id: 149, question: "Result of the following equation: Data + Context =", options: ["Knowledge", "Wisdom", "Information", "None"], answer: 2 },
+            { id: 150, question: "Result of the following equation: Knowledge + Experience =", options: ["Knowledge", "Wisdom", "Information", "None"], answer: 1 },
+            { id: 151, question: "Result of the following equation: Information + Rules =", options: ["Knowledge", "Wisdom", "Information", "None"], answer: 0 },
+            { id: 152, question: "Allows physicians to share patient info including illnesses, medications, therapies, diagnosis, and tests:", options: ["Knowledge", "MIS", "EHR", "None"], answer: 2 },
+            { id: 153, question: "Defined as the mobilization of healthcare information electronically across organizations within a region:", options: ["MI", "Medical Info Exchange", "MIT", "MIM"], answer: 1 },
+            { id: 154, question: "Programs designed to assist physicians and other health professionals with decision making tasks:", options: ["EHR", "CDSS", "CPOE", "Telemedicine"], answer: 1 },
+            { id: 155, question: "Medical IT is the practice of maintenance and care of health records by traditional and electronic means.", options: ["Right", "wrong"], answer: 0 },
+            { id: 156, question: "Interoperable Medical IT will improve care and also bring public health benefits like early detection of disease outbreaks.", options: ["Right", "wrong"], answer: 0 },
+            { id: 157, question: "Medical informatics tools include only computers.", options: ["Right", "wrong"], answer: 1 },
+            { id: 158, question: "Quality and safety require that the right information be available at the right time for care decisions.", options: ["Right", "wrong"], answer: 0 },
+            { id: 159, question: "Broad and consistent utilization of HIT will increase paperwork.", options: ["Right", "wrong"], answer: 1 },
+            { id: 160, question: "Paper records require a significant amount of storage space compared to digital records.", options: ["Right", "wrong"], answer: 0 },
+            { id: 161, question: "The following are common goals of different groups in medical informatics except:", options: ["Provide better ROI", "Improve quality", "Increase tests", "Reduce errors"], answer: 2 },
+            { id: 162, question: "Groups utilizing IT in Nationwide Health Info Network and EHR pilot projects:", options: ["Patients", "Clinicians", "Governments", "Researchers"], answer: 2 },
+            { id: 163, question: "Which group utilizes IT in Video teleconferencing, web conferencing, and podcasts?", options: ["Medical Educators", "Clinicians", "Governments", "Researchers"], answer: 0 },
+            { id: 164, question: "Groups utilizing IT in Nationwide Health Info Network and EHR pilot projects (Repeat Question):", options: ["Patients", "Clinicians", "Governments", "Researchers"], answer: 2 },
+            { id: 165, question: "Which group utilizes IT Geographic info systems to link disease outbreaks with geography?", options: ["Patients", "Clinicians", "Public Health", "Researchers"], answer: 2 }
         ];
 
         let currentIndex = 0;
@@ -313,7 +351,7 @@
             const question = QUESTIONS_DATA[currentIndex];
             const progress = ((currentIndex + 1) / QUESTIONS_DATA.length) * 100;
             
-            document.getElementById('question-text').innerText = question.question || "...";
+            document.getElementById('question-text').innerText = question.question;
             document.getElementById('current-q-num').innerText = currentIndex + 1;
             document.getElementById('progress-bar').style.width = `${progress}%`;
             document.getElementById('progress-text').innerText = `${Math.round(progress)}%`;
@@ -322,49 +360,47 @@
             const container = document.getElementById('options-container');
             container.innerHTML = '';
 
-            if (question.options) {
-                question.options.forEach((option, idx) => {
-                    const isSelected = selectedOption === idx;
-                    const isCorrect = question.answer === idx;
-                    
-                    let classes = "group w-full text-left p-4 sm:p-5 rounded-xl sm:rounded-2xl border-2 transition-all flex items-center justify-between relative active:scale-[0.98] ";
-                    
-                    if (isAnswerChecked) {
-                        if (isCorrect) {
-                            classes += "bg-emerald-50 dark:bg-emerald-950/30 border-emerald-500 text-emerald-900 dark:text-emerald-300";
-                        } else if (isSelected) {
-                            classes += "bg-rose-50 dark:bg-rose-950/30 border-rose-500 text-rose-900 dark:text-rose-300";
-                        } else {
-                            classes += "bg-white dark:bg-slate-900 border-slate-100 dark:border-slate-800 text-slate-400 dark:text-slate-600";
-                        }
+            question.options.forEach((option, idx) => {
+                const isSelected = selectedOption === idx;
+                const isCorrect = question.answer === idx;
+                
+                let classes = "group w-full text-left p-4 sm:p-5 rounded-xl sm:rounded-2xl border-2 transition-all flex items-center justify-between relative active:scale-[0.98] ";
+                
+                if (isAnswerChecked) {
+                    if (isCorrect) {
+                        classes += "bg-emerald-50 dark:bg-emerald-950/30 border-emerald-500 text-emerald-900 dark:text-emerald-300";
+                    } else if (isSelected) {
+                        classes += "bg-rose-50 dark:bg-rose-950/30 border-rose-500 text-rose-900 dark:text-rose-300";
                     } else {
-                        classes += isSelected 
-                            ? "bg-indigo-50 dark:bg-indigo-900/30 border-indigo-500 text-indigo-900 dark:text-indigo-300 shadow-md" 
-                            : "bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:border-indigo-300 text-slate-700 dark:text-slate-300";
+                        classes += "bg-white dark:bg-slate-900 border-slate-100 dark:border-slate-800 text-slate-400 dark:text-slate-600";
                     }
+                } else {
+                    classes += isSelected 
+                        ? "bg-indigo-50 dark:bg-indigo-900/30 border-indigo-500 text-indigo-900 dark:text-indigo-300 shadow-md" 
+                        : "bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:border-indigo-300 text-slate-700 dark:text-slate-300";
+                }
 
-                    const button = document.createElement('button');
-                    button.className = classes;
-                    button.disabled = isAnswerChecked;
-                    button.onclick = () => selectOption(idx);
+                const button = document.createElement('button');
+                button.className = classes;
+                button.disabled = isAnswerChecked;
+                button.onclick = () => selectOption(idx);
 
-                    const leftSide = `
-                        <span class="flex items-center gap-3 sm:gap-4">
-                            <span class="flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl flex items-center justify-center text-xs sm:text-sm font-bold border transition-colors ${isSelected ? 'bg-indigo-600 border-indigo-600 text-white' : 'bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-500'}">
-                                ${String.fromCharCode(65 + idx)}
-                            </span>
-                            <span class="font-semibold text-sm sm:text-lg text-wrap">${option}</span>
+                const leftSide = `
+                    <span class="flex items-center gap-3 sm:gap-4">
+                        <span class="flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl flex items-center justify-center text-xs sm:text-sm font-bold border transition-colors ${isSelected ? 'bg-indigo-600 border-indigo-600 text-white' : 'bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-500'}">
+                            ${String.fromCharCode(65 + idx)}
                         </span>
-                    `;
+                        <span class="font-semibold text-sm sm:text-lg text-wrap">${option}</span>
+                    </span>
+                `;
 
-                    let rightSide = '';
-                    if (isAnswerChecked && isCorrect) rightSide = '<i class="fas fa-check-circle text-emerald-600 text-lg sm:text-xl"></i>';
-                    if (isAnswerChecked && isSelected && !isCorrect) rightSide = '<i class="fas fa-times-circle text-rose-600 text-lg sm:text-xl"></i>';
+                let rightSide = '';
+                if (isAnswerChecked && isCorrect) rightSide = '<i class="fas fa-check-circle text-emerald-600 text-lg sm:text-xl"></i>';
+                if (isAnswerChecked && isSelected && !isCorrect) rightSide = '<i class="fas fa-times-circle text-rose-600 text-lg sm:text-xl"></i>';
 
-                    button.innerHTML = leftSide + rightSide;
-                    container.appendChild(button);
-                });
-            }
+                button.innerHTML = leftSide + rightSide;
+                container.appendChild(button);
+            });
 
             const actionBtn = document.getElementById('action-btn');
             if (!isAnswerChecked) {
@@ -433,8 +469,8 @@
             clearInterval(timerInterval);
             document.getElementById('quiz-container').classList.add('hidden');
             document.getElementById('results-screen').classList.remove('hidden');
-            document.getElementById('final-score').innerText = `${score} / 130`;
-            document.getElementById('final-accuracy').innerText = `${Math.round((score / 130) * 100)}%`;
+            document.getElementById('final-score').innerText = `${score} / ${QUESTIONS_DATA.length}`;
+            document.getElementById('final-accuracy').innerText = `${Math.round((score / QUESTIONS_DATA.length) * 100)}%`;
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
