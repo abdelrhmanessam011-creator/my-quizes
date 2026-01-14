@@ -161,7 +161,7 @@
                 <div class="bg-indigo-600 dark:bg-indigo-500 p-6 sm:p-8 text-center text-white">
                     <i class="fas fa-award text-5xl sm:text-6xl mb-4 text-white/90"></i>
                     <h1 class="text-2xl sm:text-3xl font-bold">Quiz Complete!</h1>
-                    <p class="text-indigo-100 text-sm mt-2">Questions Mastered</p>
+                    <p class="text-indigo-100 text-sm mt-2">165 Questions Bank Mastered</p>
                 </div>
                 <div class="p-6 sm:p-8 space-y-4 sm:space-y-6">
                     <div class="grid grid-cols-2 gap-4">
@@ -191,7 +191,6 @@
     </div>
 
     <script>
-        // ORIGINAL DATA SOURCE - 165 Questions
         const QUESTIONS_DATA = [
             // Bank 1: Questions 1-130
             { id: 1, question: "A group of procedures and different elements that work together in order to complete a task.", options: ["Input", "system", "Output", "Processing"], answer: 1 },
@@ -486,16 +485,23 @@
             });
 
             const actionBtn = document.getElementById('action-btn');
+            
+            // Clean classes to prevent stacking
+            actionBtn.classList.remove('bg-indigo-600', 'hover:bg-indigo-700', 'bg-emerald-600', 'hover:bg-emerald-700', 'bg-rose-600', 'hover:bg-rose-700');
+
             if (!isAnswerChecked) {
                 actionBtn.innerText = 'Check Answer';
                 actionBtn.disabled = selectedOption === null;
-                actionBtn.classList.remove('bg-emerald-600', 'hover:bg-emerald-700');
                 actionBtn.classList.add('bg-indigo-600', 'hover:bg-indigo-700');
             } else {
                 actionBtn.innerText = (currentIndex === questionsList.length - 1) ? 'Finish Quiz' : 'Next Question';
                 actionBtn.disabled = false;
-                actionBtn.classList.remove('bg-indigo-600', 'hover:bg-indigo-700');
-                actionBtn.classList.add('bg-emerald-600', 'hover:bg-emerald-700');
+                
+                if (selectedOption === question.answer) {
+                    actionBtn.classList.add('bg-emerald-600', 'hover:bg-emerald-700');
+                } else {
+                    actionBtn.classList.add('bg-rose-600', 'hover:bg-rose-700');
+                }
             }
         }
 
