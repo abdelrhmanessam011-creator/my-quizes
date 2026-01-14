@@ -67,11 +67,11 @@
         </header>
 
         <!-- Main Content -->
-        <main id="quiz-container" class="max-w-4xl mx-auto p-3 sm:p-8 flex-grow w-full">
-            <div id="quiz-card" class="bg-white dark:bg-slate-900 rounded-2xl sm:rounded-3xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden animate-fade-in">
+        <main id="quiz-container" class="max-w-4xl mx-auto p-3 sm:p-8 flex-grow w-full relative hidden"> <!-- Initially hidden for setup -->
+            <div id="quiz-card" class="bg-white dark:bg-slate-900 rounded-2xl sm:rounded-3xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden animate-fade-in relative z-10">
                 <div class="px-5 py-3 bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center">
                     <span class="text-[10px] sm:text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">
-                        Q <span id="current-q-num" class="text-indigo-600 dark:text-indigo-400">1</span> / 165
+                        Q <span id="current-q-num" class="text-indigo-600 dark:text-indigo-400">1</span> / <span id="total-q-num">165</span>
                     </span>
                     <span class="text-xs font-mono font-bold text-slate-400 dark:text-slate-500 flex items-center gap-1.5">
                         <i class="far fa-clock"></i>
@@ -111,26 +111,70 @@
             </div>
         </main>
 
+        <!-- Setup Modal (Order/Shuffle) -->
+        <div id="setup-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md animate-fade-in p-4">
+            <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl p-8 max-w-sm w-full border border-slate-200 dark:border-slate-700 text-center">
+                <div class="w-16 h-16 bg-indigo-100 dark:bg-indigo-900/50 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <i class="fas fa-cogs text-3xl text-indigo-600 dark:text-indigo-400"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-3">Quiz Setup</h2>
+                <p class="text-slate-600 dark:text-slate-400 mb-8 text-sm">How would you like the questions presented?</p>
+                
+                <div class="space-y-3">
+                    <button onclick="startQuiz(false)" class="w-full py-4 bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 hover:border-indigo-500 dark:hover:border-indigo-500 text-slate-700 dark:text-slate-200 rounded-xl font-bold transition-all flex items-center justify-center gap-3 group">
+                        <i class="fas fa-sort-numeric-down text-slate-400 group-hover:text-indigo-500 transition-colors"></i> In Order (1-165)
+                    </button>
+                    <button onclick="startQuiz(true)" class="w-full py-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold transition-all shadow-lg shadow-indigo-200 dark:shadow-none flex items-center justify-center gap-3">
+                        <i class="fas fa-random"></i> Shuffle Questions
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Review Modal -->
+        <div id="repeat-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm hidden animate-fade-in p-4">
+            <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl p-6 max-w-sm w-full border border-slate-200 dark:border-slate-700 transform scale-100 transition-all">
+                <div class="text-center">
+                    <div class="inline-flex items-center justify-center w-14 h-14 rounded-full bg-amber-100 dark:bg-amber-900/30 mb-4 animate-bounce">
+                        <i class="fas fa-redo text-amber-600 dark:text-amber-400 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">Review Needed?</h3>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm mb-6 leading-relaxed">
+                        You answered this question incorrectly. Would you like to add it to the end of the quiz to try again later?
+                    </p>
+                    
+                    <div class="flex flex-col gap-3">
+                        <button onclick="confirmRepeat()" class="w-full py-3.5 px-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold transition-all shadow-lg shadow-indigo-200 dark:shadow-none active:scale-95 flex items-center justify-center gap-2">
+                            <i class="fas fa-history"></i> Repeat Later
+                        </button>
+                        <button onclick="skipRepeat()" class="w-full py-3.5 px-4 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 rounded-xl font-semibold transition-all active:scale-95">
+                            Skip & Continue
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Final Results -->
         <div id="results-screen" class="hidden max-w-4xl mx-auto p-4 sm:p-8 animate-slide-up w-full">
             <div class="max-w-md mx-auto bg-white dark:bg-slate-900 rounded-3xl shadow-xl border border-slate-200 dark:border-slate-800 overflow-hidden theme-transition">
                 <div class="bg-indigo-600 dark:bg-indigo-500 p-6 sm:p-8 text-center text-white">
                     <i class="fas fa-award text-5xl sm:text-6xl mb-4 text-white/90"></i>
                     <h1 class="text-2xl sm:text-3xl font-bold">Quiz Complete!</h1>
-                    <p class="text-indigo-100 text-sm mt-2">165 Questions Bank Mastered</p>
+                    <p class="text-indigo-100 text-sm mt-2">Questions Mastered</p>
                 </div>
                 <div class="p-6 sm:p-8 space-y-4 sm:space-y-6">
                     <div class="grid grid-cols-2 gap-4">
                         <div class="bg-indigo-50 dark:bg-slate-800 p-4 rounded-2xl text-center border border-indigo-100 dark:border-slate-700">
                             <p class="text-indigo-600 dark:text-indigo-400 text-[10px] font-bold uppercase mb-1">Total Score</p>
-                            <p id="final-score" class="text-2xl sm:text-3xl font-bold text-indigo-900 dark:text-slate-100">0 / 165</p>
+                            <p id="final-score" class="text-2xl sm:text-3xl font-bold text-indigo-900 dark:text-slate-100">0</p>
                         </div>
                         <div class="bg-indigo-50 dark:bg-slate-800 p-4 rounded-2xl text-center border border-indigo-100 dark:border-slate-700">
                             <p class="text-indigo-600 dark:text-indigo-400 text-[10px] font-bold uppercase mb-1">Accuracy</p>
                             <p id="final-accuracy" class="text-2xl sm:text-3xl font-bold text-indigo-900 dark:text-slate-100">0%</p>
                         </div>
                     </div>
-                    <button onclick="restartQuiz()" class="w-full py-4 bg-indigo-600 dark:bg-indigo-500 text-white rounded-xl sm:rounded-2xl font-bold hover:bg-indigo-700 transition-all flex items-center justify-center gap-2">
+                    <button onclick="restartApp()" class="w-full py-4 bg-indigo-600 dark:bg-indigo-500 text-white rounded-xl sm:rounded-2xl font-bold hover:bg-indigo-700 transition-all flex items-center justify-center gap-2">
                         <i class="fas fa-redo"></i> Restart Quiz
                     </button>
                 </div>
@@ -147,8 +191,9 @@
     </div>
 
     <script>
+        // ORIGINAL DATA SOURCE - 165 Questions
         const QUESTIONS_DATA = [
-            // Bank 1: Questions 1-130 from "MI_Question Bank_Solution.pdf"
+            // Bank 1: Questions 1-130
             { id: 1, question: "A group of procedures and different elements that work together in order to complete a task.", options: ["Input", "system", "Output", "Processing"], answer: 1 },
             { id: 2, question: "Involves capturing and assembling elements that enters the system to be processed.", options: ["Processing", "Output", "Input", "system"], answer: 2 },
             { id: 3, question: "Involves transformation processes that convert input into output", options: ["Output", "system", "Input", "Processing"], answer: 3 },
@@ -161,7 +206,7 @@
             { id: 10, question: "An integrated set of components for collecting, storing, and processing data", options: ["adaptive system", "Information Systems", "cybernetic system", "Control System"], answer: 1 },
             { id: 11, question: "An academic field which is primarily concerned with analysis, collection, classification, manipulation, Storage, retrieval, movement, and dissemination of information.", options: ["Computer science", "Information science", "Health care science", "None of the above"], answer: 1 },
             { id: 12, question: "Medical informatics is also called all of the following except", options: ["Nursing informatics", "Bioinformatics", "Clinical informatics", "Healthcare informatics"], answer: 1 },
-            { id: 13, question: "The largest amount of data value in the data pyramid exists in the", options: ["base of the pyramid", "middle of the pyramid", "Top of the pyramid", "All of the above"], answer: 2 }, // Updated based on correction
+            { id: 13, question: "The largest amount of data value in the data pyramid exists in the", options: ["base of the pyramid", "middle of the pyramid", "Top of the pyramid", "All of the above"], answer: 2 },
             { id: 14, question: "The intersection of information science, computer science, and health care", options: ["Health information management", "Health information exchange", "Health information technology", "Health informatics"], answer: 3 },
             { id: 15, question: "The result of the equation: Knowledge + Experience =", options: ["Data", "Wisdom", "Information", "All of the above"], answer: 1 },
             { id: 16, question: "The mobilization of healthcare information electronically across organizations within a region, community or hospital system", options: ["Medical informatics", "Medical information exchange", "Medical information technology", "Medical information management"], answer: 1 },
@@ -318,19 +363,50 @@
             { id: 165, question: ".utilize information technology Geographic information systems to link disease outbreaks with geography", options: ["Patients", "Clinicians", "Public Health", "Researchers"], answer: 2 }
         ];
 
+        // Working variables
+        let questionsList = []; 
         let currentIndex = 0;
         let selectedOption = null;
         let isAnswerChecked = false;
         let score = 0;
-        let userAnswers = new Array(QUESTIONS_DATA.length).fill(null);
-        let quizFinished = false;
+        let userAnswers = []; // To track answers for the current session
         let timer = 0;
         let timerInterval;
 
-        function init() {
+        function startQuiz(shuffle) {
+            // Clone original data
+            questionsList = [...QUESTIONS_DATA];
+            
+            if (shuffle) {
+                // Fisher-Yates shuffle
+                for (let i = questionsList.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [questionsList[i], questionsList[j]] = [questionsList[j], questionsList[i]];
+                }
+            }
+
+            // Reset state
+            currentIndex = 0;
+            selectedOption = null;
+            isAnswerChecked = false;
+            score = 0;
+            userAnswers = new Array(questionsList.length).fill(null);
+            timer = 0;
+
+            // UI Updates
+            document.getElementById('setup-modal').classList.add('hidden');
+            document.getElementById('quiz-container').classList.remove('hidden');
+            document.getElementById('total-q-num').innerText = questionsList.length;
+            
             startTimer();
             renderQuestion();
             updateStats();
+        }
+
+        function restartApp() {
+            clearInterval(timerInterval);
+            document.getElementById('results-screen').classList.add('hidden');
+            document.getElementById('setup-modal').classList.remove('hidden');
         }
 
         function startTimer() {
@@ -348,11 +424,14 @@
         }
 
         function renderQuestion() {
-            const question = QUESTIONS_DATA[currentIndex];
-            const progress = ((currentIndex + 1) / QUESTIONS_DATA.length) * 100;
+            const question = questionsList[currentIndex];
+            // Calculate progress based on current index vs total current list length
+            // Note: If repeating questions extends the list, progress bar adapts
+            const progress = ((currentIndex + 1) / questionsList.length) * 100;
             
             document.getElementById('question-text').innerText = question.question;
             document.getElementById('current-q-num').innerText = currentIndex + 1;
+            document.getElementById('total-q-num').innerText = questionsList.length;
             document.getElementById('progress-bar').style.width = `${progress}%`;
             document.getElementById('progress-text').innerText = `${Math.round(progress)}%`;
             document.getElementById('prev-btn').disabled = currentIndex === 0;
@@ -364,15 +443,17 @@
                 const isSelected = selectedOption === idx;
                 const isCorrect = question.answer === idx;
                 
-                let classes = "group w-full text-left p-4 sm:p-5 rounded-xl sm:rounded-2xl border-2 transition-all flex items-center justify-between relative active:scale-[0.98] ";
+                let classes = "group w-full text-left p-4 sm:p-5 rounded-xl sm:rounded-2xl border-2 transition-all flex items-center justify-between relative active:scale-[0.98] cursor-pointer ";
                 
                 if (isAnswerChecked) {
+                    // Disable hover effects
+                    classes += "cursor-default ";
                     if (isCorrect) {
                         classes += "bg-emerald-50 dark:bg-emerald-950/30 border-emerald-500 text-emerald-900 dark:text-emerald-300";
                     } else if (isSelected) {
                         classes += "bg-rose-50 dark:bg-rose-950/30 border-rose-500 text-rose-900 dark:text-rose-300";
                     } else {
-                        classes += "bg-white dark:bg-slate-900 border-slate-100 dark:border-slate-800 text-slate-400 dark:text-slate-600";
+                        classes += "bg-white dark:bg-slate-900 border-slate-100 dark:border-slate-800 text-slate-400 dark:text-slate-600 opacity-60";
                     }
                 } else {
                     classes += isSelected 
@@ -390,13 +471,15 @@
                         <span class="flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl flex items-center justify-center text-xs sm:text-sm font-bold border transition-colors ${isSelected ? 'bg-indigo-600 border-indigo-600 text-white' : 'bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-500'}">
                             ${String.fromCharCode(65 + idx)}
                         </span>
-                        <span class="font-semibold text-sm sm:text-lg text-wrap">${option}</span>
+                        <span class="font-semibold text-sm sm:text-lg text-wrap text-left">${option}</span>
                     </span>
                 `;
 
                 let rightSide = '';
-                if (isAnswerChecked && isCorrect) rightSide = '<i class="fas fa-check-circle text-emerald-600 text-lg sm:text-xl"></i>';
-                if (isAnswerChecked && isSelected && !isCorrect) rightSide = '<i class="fas fa-times-circle text-rose-600 text-lg sm:text-xl"></i>';
+                if (isAnswerChecked) {
+                    if (isCorrect) rightSide = '<i class="fas fa-check-circle text-emerald-600 text-lg sm:text-xl"></i>';
+                    else if (isSelected) rightSide = '<i class="fas fa-times-circle text-rose-600 text-lg sm:text-xl"></i>';
+                }
 
                 button.innerHTML = leftSide + rightSide;
                 container.appendChild(button);
@@ -406,13 +489,18 @@
             if (!isAnswerChecked) {
                 actionBtn.innerText = 'Check Answer';
                 actionBtn.disabled = selectedOption === null;
+                actionBtn.classList.remove('bg-emerald-600', 'hover:bg-emerald-700');
+                actionBtn.classList.add('bg-indigo-600', 'hover:bg-indigo-700');
             } else {
-                actionBtn.innerText = (currentIndex === QUESTIONS_DATA.length - 1) ? 'Finish Quiz' : 'Next Question';
+                actionBtn.innerText = (currentIndex === questionsList.length - 1) ? 'Finish Quiz' : 'Next Question';
                 actionBtn.disabled = false;
+                actionBtn.classList.remove('bg-indigo-600', 'hover:bg-indigo-700');
+                actionBtn.classList.add('bg-emerald-600', 'hover:bg-emerald-700');
             }
         }
 
         function selectOption(idx) {
+            if (isAnswerChecked) return;
             selectedOption = idx;
             renderQuestion();
         }
@@ -421,14 +509,28 @@
             if (!isAnswerChecked) {
                 checkAnswer();
             } else {
-                nextQuestion();
+                // If the answer was incorrect, prompt for repetition
+                const currentQ = questionsList[currentIndex];
+                // userAnswers tracks what option index the user picked
+                const userPicked = userAnswers[currentIndex];
+                const isCorrect = userPicked === currentQ.answer;
+
+                if (!isCorrect) {
+                    showRepeatModal();
+                } else {
+                    nextQuestion();
+                }
             }
         }
 
         function checkAnswer() {
-            const question = QUESTIONS_DATA[currentIndex];
+            const question = questionsList[currentIndex];
             const isCorrect = selectedOption === question.answer;
+            
+            // Only increment score if this is the FIRST attempt at this question ID?
+            // Simple logic: just count score based on current flow.
             if (isCorrect) score++;
+            
             userAnswers[currentIndex] = selectedOption;
             isAnswerChecked = true;
             renderQuestion();
@@ -436,10 +538,10 @@
         }
 
         function nextQuestion() {
-            if (currentIndex < QUESTIONS_DATA.length - 1) {
+            if (currentIndex < questionsList.length - 1) {
                 currentIndex++;
-                selectedOption = userAnswers[currentIndex];
-                isAnswerChecked = selectedOption !== null;
+                selectedOption = null; // Reset selection for next Q
+                isAnswerChecked = false; // Reset check state
                 renderQuestion();
             } else {
                 finishQuiz();
@@ -450,41 +552,66 @@
         function prevQuestion() {
             if (currentIndex > 0) {
                 currentIndex--;
-                selectedOption = userAnswers[currentIndex];
-                isAnswerChecked = selectedOption !== null;
+                // Restore state for previous question
+                selectedOption = userAnswers[currentIndex]; 
+                isAnswerChecked = true; // Previous questions are always "checked"
                 renderQuestion();
             }
         }
 
+        function showRepeatModal() {
+            document.getElementById('repeat-modal').classList.remove('hidden');
+        }
+
+        function confirmRepeat() {
+            // Clone current question to end of array
+            const currentQ = questionsList[currentIndex];
+            // Create a copy to ensure unique object ref if needed, though simple push works
+            questionsList.push(currentQ);
+            
+            // Expand userAnswers to match new length
+            userAnswers.push(null);
+            
+            // Update counts UI
+            document.getElementById('total-q-num').innerText = questionsList.length;
+            
+            // Close modal and proceed
+            document.getElementById('repeat-modal').classList.add('hidden');
+            nextQuestion();
+        }
+
+        function skipRepeat() {
+            document.getElementById('repeat-modal').classList.add('hidden');
+            nextQuestion();
+        }
+
         function updateStats() {
             document.getElementById('score-display').innerText = score;
-            document.getElementById('remaining-display').innerText = QUESTIONS_DATA.length - currentIndex - (isAnswerChecked ? 1 : 0);
+            
+            // Remaining = Total (dynamic) - Current Index - 1 (if checked)
+            let remaining = questionsList.length - currentIndex;
+            if (isAnswerChecked) remaining -= 1;
+            if (remaining < 0) remaining = 0;
+            
+            document.getElementById('remaining-display').innerText = remaining;
+            
+            // Accuracy based on questions attempted so far
             const attempted = currentIndex + (isAnswerChecked ? 1 : 0);
             const accuracy = attempted > 0 ? Math.round((score / attempted) * 100) : 0;
             document.getElementById('accuracy-display').innerText = `${accuracy}%`;
         }
 
         function finishQuiz() {
-            quizFinished = true;
             clearInterval(timerInterval);
             document.getElementById('quiz-container').classList.add('hidden');
             document.getElementById('results-screen').classList.remove('hidden');
-            document.getElementById('final-score').innerText = `${score} / ${QUESTIONS_DATA.length}`;
-            document.getElementById('final-accuracy').innerText = `${Math.round((score / QUESTIONS_DATA.length) * 100)}%`;
+            
+            document.getElementById('final-score').innerText = `${score} / ${questionsList.length}`;
+            
+            const accuracy = Math.round((score / questionsList.length) * 100);
+            document.getElementById('final-accuracy').innerText = `${accuracy}%`;
+            
             window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function restartQuiz() {
-            currentIndex = 0;
-            selectedOption = null;
-            isAnswerChecked = false;
-            score = 0;
-            userAnswers = new Array(QUESTIONS_DATA.length).fill(null);
-            quizFinished = false;
-            timer = 0;
-            document.getElementById('quiz-container').classList.remove('hidden');
-            document.getElementById('results-screen').classList.add('hidden');
-            init();
         }
 
         function toggleDarkMode() {
@@ -499,7 +626,12 @@
             }
         }
 
-        window.onload = init;
+        // Initialize: Show setup modal first
+        // No auto-init. Modal is visible by default in HTML structure (remove hidden there if needed, currently hidden).
+        // Actually, let's make sure modal is visible and main container is hidden on load.
+        // Script logic handles this.
+        document.getElementById('setup-modal').classList.remove('hidden');
+        
     </script>
 </body>
 </html>
