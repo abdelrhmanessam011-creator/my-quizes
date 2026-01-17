@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Medical Informatics Quiz 2026</title>
+    <title>Medical Writing Quiz 2026 - Pro</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -13,6 +13,7 @@
                     animation: {
                         'fade-in': 'fadeIn 0.3s ease-out',
                         'slide-up': 'slideUp 0.4s ease-out',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
                     },
                     keyframes: {
                         fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } },
@@ -33,6 +34,12 @@
             transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
         }
         .text-wrap { word-wrap: break-word; overflow-wrap: break-word; }
+        .exam-timer-critical { color: #ef4444; animation: pulse 1s infinite; }
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+            -webkit-appearance: none; 
+            margin: 0; 
+        }
     </style>
 </head>
 <body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-300 min-h-screen font-sans overflow-x-hidden theme-transition">
@@ -43,11 +50,11 @@
             <div class="max-w-4xl mx-auto flex items-center justify-between">
                 <div class="flex items-center gap-2 sm:gap-3">
                     <div class="bg-indigo-600 dark:bg-indigo-500 p-2 rounded-lg shadow-md">
-                        <i class="fas fa-book-medical text-white text-base sm:text-xl"></i>
+                        <i class="fas fa-pen-nib text-white text-base sm:text-xl"></i>
                     </div>
                     <div class="block">
-                        <h1 class="text-sm sm:text-lg font-bold text-slate-800 dark:text-slate-100 leading-tight">Informatics Quiz</h1>
-                        <p class="hidden sm:block text-xs text-slate-500 dark:text-slate-400 font-medium">165 Questions Master Bank</p>
+                        <h1 class="text-sm sm:text-lg font-bold text-slate-800 dark:text-slate-100 leading-tight">Medical Writing <span id="mode-badge" class="hidden ml-2 px-2 py-0.5 bg-rose-100 text-rose-600 dark:bg-rose-900/40 dark:text-rose-400 rounded text-[10px] uppercase tracking-tighter">Exam Mode</span></h1>
+                        <p class="hidden sm:block text-xs text-slate-500 dark:text-slate-400 font-medium">50 Questions Master Bank</p>
                     </div>
                 </div>
 
@@ -67,13 +74,13 @@
         </header>
 
         <!-- Main Content -->
-        <main id="quiz-container" class="max-w-4xl mx-auto p-3 sm:p-8 flex-grow w-full relative hidden"> <!-- Initially hidden for setup -->
+        <main id="quiz-container" class="max-w-4xl mx-auto p-3 sm:p-8 flex-grow w-full relative hidden">
             <div id="quiz-card" class="bg-white dark:bg-slate-900 rounded-2xl sm:rounded-3xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden animate-fade-in relative z-10">
                 <div class="px-5 py-3 bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center">
                     <span class="text-[10px] sm:text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">
-                        Q <span id="current-q-num" class="text-indigo-600 dark:text-indigo-400">1</span> / <span id="total-q-num">165</span>
+                        Q <span id="current-q-num" class="text-indigo-600 dark:text-indigo-400">1</span> / <span id="total-q-num">50</span>
                     </span>
-                    <span class="text-xs font-mono font-bold text-slate-400 dark:text-slate-500 flex items-center gap-1.5">
+                    <span id="timer-wrapper" class="text-xs font-mono font-bold text-slate-400 dark:text-slate-500 flex items-center gap-1.5">
                         <i class="far fa-clock"></i>
                         <span id="timer-display">0:00</span>
                     </span>
@@ -95,14 +102,14 @@
             </div>
 
             <!-- Stats -->
-            <div id="stats-container" class="mt-6 grid grid-cols-3 sm:grid-cols-3 gap-3 sm:gap-6">
+            <div id="stats-container" class="mt-6 grid grid-cols-3 gap-3 sm:gap-6">
                 <div class="bg-white dark:bg-slate-900 p-3 sm:p-5 rounded-xl sm:rounded-2xl border border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center sm:items-start gap-1 sm:gap-4 shadow-sm">
                     <div class="bg-emerald-50 dark:bg-emerald-900/30 p-2 sm:p-3 rounded-lg text-emerald-600"><i class="fas fa-check-circle text-sm sm:text-xl"></i></div>
                     <div class="text-center sm:text-left"><p class="text-[9px] sm:text-xs font-bold text-slate-500 uppercase">Correct</p><p id="score-display" class="text-sm sm:text-2xl font-black text-slate-900 dark:text-slate-100 leading-none">0</p></div>
                 </div>
                 <div class="bg-white dark:bg-slate-900 p-3 sm:p-5 rounded-xl sm:rounded-2xl border border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center sm:items-start gap-1 sm:gap-4 shadow-sm">
                     <div class="bg-indigo-50 dark:bg-indigo-900/30 p-2 sm:p-3 rounded-lg text-indigo-600"><i class="fas fa-list-ol text-sm sm:text-xl"></i></div>
-                    <div class="text-center sm:text-left"><p class="text-[9px] sm:text-xs font-bold text-slate-500 uppercase">Left</p><p id="remaining-display" class="text-sm sm:text-2xl font-black text-slate-900 dark:text-slate-100 leading-none">164</p></div>
+                    <div class="text-center sm:text-left"><p class="text-[9px] sm:text-xs font-bold text-slate-500 uppercase">Left</p><p id="remaining-display" class="text-sm sm:text-2xl font-black text-slate-900 dark:text-slate-100 leading-none">50</p></div>
                 </div>
                 <div class="bg-white dark:bg-slate-900 p-3 sm:p-5 rounded-xl sm:rounded-2xl border border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center sm:items-start gap-1 sm:gap-4 shadow-sm">
                     <div class="bg-amber-50 dark:bg-amber-900/30 p-2 sm:p-3 rounded-lg text-amber-600"><i class="fas fa-percentage text-sm sm:text-xl"></i></div>
@@ -111,21 +118,45 @@
             </div>
         </main>
 
-        <!-- Setup Modal (Order/Shuffle) -->
+        <!-- Setup Modal -->
         <div id="setup-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md animate-fade-in p-4">
             <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl p-8 max-w-sm w-full border border-slate-200 dark:border-slate-700 text-center">
                 <div class="w-16 h-16 bg-indigo-100 dark:bg-indigo-900/50 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <i class="fas fa-cogs text-3xl text-indigo-600 dark:text-indigo-400"></i>
+                    <i class="fas fa-graduation-cap text-3xl text-indigo-600 dark:text-indigo-400"></i>
                 </div>
-                <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-3">Quiz Setup</h2>
-                <p class="text-slate-600 dark:text-slate-400 mb-8 text-sm">How would you like the questions presented?</p>
+                <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-3">Quiz Mode Selection</h2>
+                <p class="text-slate-600 dark:text-slate-400 mb-8 text-sm">Choose how you want to test your medical writing knowledge.</p>
                 
                 <div class="space-y-3">
-                    <button onclick="startQuiz(false)" class="w-full py-4 bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 hover:border-indigo-500 dark:hover:border-indigo-500 text-slate-700 dark:text-slate-200 rounded-xl font-bold transition-all flex items-center justify-center gap-3 group">
-                        <i class="fas fa-sort-numeric-down text-slate-400 group-hover:text-indigo-500 transition-colors"></i> In Order (1-165)
+                    <button onclick="requestStartPoint()" class="w-full py-4 bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 hover:border-indigo-500 dark:hover:border-indigo-500 text-slate-700 dark:text-slate-200 rounded-xl font-bold transition-all flex items-center justify-center gap-3 group">
+                        <i class="fas fa-sort-numeric-down text-slate-400 group-hover:text-indigo-500 transition-colors"></i> Standard (1-50)
                     </button>
-                    <button onclick="startQuiz(true)" class="w-full py-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold transition-all shadow-lg shadow-indigo-200 dark:shadow-none flex items-center justify-center gap-3">
-                        <i class="fas fa-random"></i> Shuffle Questions
+                    <button onclick="startQuiz('shuffle')" class="w-full py-4 bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 hover:border-indigo-500 dark:hover:border-indigo-500 text-slate-700 dark:text-slate-200 rounded-xl font-bold transition-all flex items-center justify-center gap-3 group">
+                        <i class="fas fa-random text-slate-400 group-hover:text-indigo-500 transition-colors"></i> Randomized Practice
+                    </button>
+                    <button onclick="startQuiz('exam')" class="w-full py-4 bg-rose-600 hover:bg-rose-700 text-white rounded-xl font-bold transition-all shadow-lg shadow-rose-200 dark:shadow-none flex items-center justify-center gap-3">
+                        <i class="fas fa-stopwatch"></i> Timed Exam (15m)
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Start Point Picker Modal -->
+        <div id="start-picker-modal" class="fixed inset-0 z-[60] flex items-center justify-center bg-black/90 backdrop-blur-md hidden animate-fade-in p-4">
+            <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl p-8 max-w-sm w-full border border-slate-200 dark:border-slate-700 text-center">
+                <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">Select Starting Point</h3>
+                <p class="text-slate-600 dark:text-slate-400 text-sm mb-6">Enter question number (1-50):</p>
+                
+                <div class="flex gap-2 mb-6">
+                    <input type="number" id="start-q-input" min="1" max="50" value="1" class="w-full bg-slate-50 dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-center text-xl font-bold focus:border-indigo-500 outline-none transition-all">
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <button onclick="closeStartPicker()" class="py-3 px-4 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 rounded-xl font-bold hover:bg-slate-200 transition-all">
+                        Back
+                    </button>
+                    <button onclick="confirmStartPoint()" class="py-3 px-4 bg-indigo-600 text-white rounded-xl font-bold hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-200 dark:shadow-none">
+                        Start Quiz
                     </button>
                 </div>
             </div>
@@ -158,10 +189,10 @@
         <!-- Final Results -->
         <div id="results-screen" class="hidden max-w-4xl mx-auto p-4 sm:p-8 animate-slide-up w-full">
             <div class="max-w-md mx-auto bg-white dark:bg-slate-900 rounded-3xl shadow-xl border border-slate-200 dark:border-slate-800 overflow-hidden theme-transition">
-                <div class="bg-indigo-600 dark:bg-indigo-500 p-6 sm:p-8 text-center text-white">
+                <div id="results-header" class="bg-indigo-600 dark:bg-indigo-500 p-6 sm:p-8 text-center text-white">
                     <i class="fas fa-award text-5xl sm:text-6xl mb-4 text-white/90"></i>
                     <h1 class="text-2xl sm:text-3xl font-bold">Quiz Complete!</h1>
-                    <p class="text-indigo-100 text-sm mt-2">165 Questions Bank Mastered</p>
+                    <p class="text-indigo-100 text-sm mt-2">Questions Mastered</p>
                 </div>
                 <div class="p-6 sm:p-8 space-y-4 sm:space-y-6">
                     <div class="grid grid-cols-2 gap-4">
@@ -174,8 +205,9 @@
                             <p id="final-accuracy" class="text-2xl sm:text-3xl font-bold text-indigo-900 dark:text-slate-100">0%</p>
                         </div>
                     </div>
+                    <div id="exam-status-msg" class="hidden p-4 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 text-center text-sm font-medium"></div>
                     <button onclick="restartApp()" class="w-full py-4 bg-indigo-600 dark:bg-indigo-500 text-white rounded-xl sm:rounded-2xl font-bold hover:bg-indigo-700 transition-all flex items-center justify-center gap-2">
-                        <i class="fas fa-redo"></i> Restart Quiz
+                        <i class="fas fa-redo"></i> Return to Menu
                     </button>
                 </div>
             </div>
@@ -184,7 +216,7 @@
         <footer class="max-w-4xl mx-auto py-8 sm:py-12 text-center text-slate-400 dark:text-slate-600 text-[10px] sm:text-sm font-semibold px-4 theme-transition">
             <div class="flex items-center justify-center gap-2 mb-2">
                 <i class="fas fa-book-open opacity-50"></i>
-                <span>Medical Informatics Unified Quiz Bank</span>
+                <span>Medical Writing Unified Quiz Bank</span>
             </div>
             <p>© 2026 Academic Resources</p>
         </footer>
@@ -192,207 +224,117 @@
 
     <script>
         const QUESTIONS_DATA = [
-            // Bank 1: Questions 1-130
-            { id: 1, question: "A group of procedures and different elements that work together in order to complete a task.", options: ["Input", "system", "Output", "Processing"], answer: 1 },
-            { id: 2, question: "Involves capturing and assembling elements that enters the system to be processed.", options: ["Processing", "Output", "Input", "system"], answer: 2 },
-            { id: 3, question: "Involves transformation processes that convert input into output", options: ["Output", "system", "Input", "Processing"], answer: 3 },
-            { id: 4, question: "Involves transferring elements that have been produced by a transformation process to their ultimate destination.", options: ["Processing", "Input", "Output", "System"], answer: 2 },
-            { id: 5, question: "A system with feedback and control functions is called", options: ["cybernetic system", "Open System", "Closed System", "Control System"], answer: 0 },
-            { id: 6, question: "Data about the performance of a system", options: ["Feedback", "Storage", "Control", "Input"], answer: 0 },
-            { id: 7, question: "The component that monitors and evaluates feedback", options: ["Feedback", "Input", "Control", "Storage"], answer: 2 },
-            { id: 8, question: "The system that interacts with other systems in its environment.", options: ["cybernetic system", "open system", "adaptive system", "Control System"], answer: 1 },
-            { id: 9, question: "The system that has the ability to change itself or its environment in order to survive", options: ["adaptive system", "open system", "cybernetic system", "Control System"], answer: 0 },
-            { id: 10, question: "An integrated set of components for collecting, storing, and processing data", options: ["adaptive system", "Information Systems", "cybernetic system", "Control System"], answer: 1 },
-            { id: 11, question: "An academic field which is primarily concerned with analysis, collection, classification, manipulation, Storage, retrieval, movement, and dissemination of information.", options: ["Computer science", "Information science", "Health care science", "None of the above"], answer: 1 },
-            { id: 12, question: "Medical informatics is also called all of the following except", options: ["Nursing informatics", "Bioinformatics", "Clinical informatics", "Healthcare informatics"], answer: 1 },
-            { id: 13, question: "The largest amount of data value in the data pyramid exists in the", options: ["base of the pyramid", "middle of the pyramid", "Top of the pyramid", "All of the above"], answer: 2 },
-            { id: 14, question: "The intersection of information science, computer science, and health care", options: ["Health information management", "Health information exchange", "Health information technology", "Health informatics"], answer: 3 },
-            { id: 15, question: "The result of the equation: Knowledge + Experience =", options: ["Data", "Wisdom", "Information", "All of the above"], answer: 1 },
-            { id: 16, question: "The mobilization of healthcare information electronically across organizations within a region, community or hospital system", options: ["Medical informatics", "Medical information exchange", "Medical information technology", "Medical information management"], answer: 1 },
-            { id: 17, question: "Allows the physicians to share their important patient information, including illnesses, medications, therapies, diagnosis, tests and any other pertinent information", options: ["Knowledge", "MIS", "EHR", "None of the above"], answer: 2 },
-            { id: 18, question: "The following are common goals of different groups in medical informatics except", options: ["Provide better return on investment", "Improve the quality of care", "Increase of tests or prescriptions ordered", "Reduce medical errors"], answer: 2 },
-            { id: 19, question: "Utilize information technology in Nation-wide Health Information Network, Financial support for EHR adoption, and Information technology pilot projects.", options: ["Patients", "Clinicians", "Governments", "Researchers"], answer: 2 },
-            { id: 20, question: "Health Informatics professionals still faces the challenge of achieving interoperability between different formats to make information available across all areas of the healthcare sector.", options: ["Right", "Wrong"], answer: 0 },
-            { id: 21, question: "A collection of text, numbers and symbols with no meaning", options: ["Information", "Knowledge", "Data", "Wisdom"], answer: 2 },
-            { id: 22, question: "The result of processing data, usually by computer", options: ["Information", "Knowledge", "Data", "Wisdom"], answer: 0 },
-            { id: 23, question: "The result of the equation: Data + Meaning =", options: ["Information", "Knowledge", "Data", "Wisdom"], answer: 0 },
-            { id: 24, question: "The result of the equation: Information + application or use =", options: ["Information", "Knowledge", "Data", "Wisdom"], answer: 1 },
-            { id: 25, question: "The various hardware, software, networking, and data management components necessary for the system to operate", options: ["Platform", "Information technology (IT)", "System", "Feedback"], answer: 1 },
-            { id: 26, question: "An information system that uses computer technology to perform some or all of its intended tasks.", options: ["Adaptive system", "Open System", "Computer-based Information System (CBIS)", "Information System"], answer: 2 },
-            { id: 27, question: "The following information technologies are used by CBIS", options: ["hardware technologies", "software technologies", "Data resource management technologies", "All of the above"], answer: 3 },
-            { id: 28, question: "Vital role that information systems can perform for a business enterprise.", options: ["Support of business processes", "Support of strategies", "Support of decision making", "All of the above"], answer: 3 },
-            { id: 29, question: "Sales and inventory processing and accounting systems are examples of...", options: ["Process control systems", "Transaction processing systems", "Enterprise collaboration systems", "Management information systems"], answer: 1 },
-            { id: 30, question: "Process data resulting from business processes, update operational databases, and produce business documents", options: ["Process control systems", "Transaction processing systems", "Enterprise collaboration systems", "Management information systems"], answer: 1 },
-            { id: 31, question: "A system that monitor and control industrial processes", options: ["Enterprise collaboration systems", "Management information systems", "Process control systems", "Transaction processing systems"], answer: 2 },
-            { id: 32, question: "Petroleum refining, power generation and steel production systems are examples of...", options: ["Process control systems", "Transaction processing systems", "Management information systems", "Enterprise collaboration systems"], answer: 0 },
-            { id: 33, question: "Support team, workgroup, and enterprise communications", options: ["Enterprise collaboration systems", "Transaction processing systems", "Process control systems", "Management information systems"], answer: 0 },
-            { id: 34, question: "E-mail, chat, and videoconferencing groupware systems are examples of", options: ["Management information systems", "Transaction processing systems", "Process control systems", "Enterprise collaboration systems"], answer: 3 },
-            { id: 35, question: "Provide information in the form of pre-specified reports and displays to support business decision making.", options: ["Enterprise collaboration systems", "Process control systems", "Management information systems", "Transaction processing systems"], answer: 2 },
-            { id: 36, question: "Sales analysis, production performance, and cost reporting systems are examples of", options: ["Management information systems", "Transaction processing systems", "Enterprise collaboration systems", "Process control systems"], answer: 0 },
-            { id: 37, question: "Provide interactive ad hoc support for the decision-making processes of managers and other business professionals.", options: ["Process control systems", "Enterprise collaboration systems", "Decision support systems", "Transaction processing systems"], answer: 2 },
-            { id: 38, question: "Provide critical information from MIS, DSS, and other sources tailored to the information needs of executives.", options: ["Executive information systems", "Process control systems", "Decision support systems", "Transaction processing systems"], answer: 0 },
-            { id: 39, question: "Product pricing, profitability forecasting, and risk analysis systems are examples of...", options: ["Decision support systems", "Transaction processing systems", "Enterprise collaboration systems", "Process control systems"], answer: 0 },
-            { id: 40, question: "Systems for easy access to analyses of business performance and actions of competitors are Examples of...", options: ["Decision support systems", "Transaction processing systems", "Process control systems", "Executive information systems"], answer: 3 },
-            { id: 41, question: "Knowledge-based systems that provide experienced advice and act as proficient consultants to users", options: ["Enterprise collaboration systems", "Decision support systems", "Expert systems", "Transaction processing systems"], answer: 2 },
-            { id: 42, question: "Credit application advisor and diagnostic maintenance systems are examples of...", options: ["Expert systems", "Transaction processing systems", "Enterprise collaboration systems", "Decision support systems"], answer: 0 },
-            { id: 43, question: "Knowledge-based systems that support the creation, organization, and dissemination of business knowledge within the enterprise", options: ["Enterprise collaboration systems", "Decision support systems", "Knowledge management systems", "Transaction processing systems"], answer: 2 },
-            { id: 44, question: "Intranet access to best business practices, Sales proposal strategies, and customer problem Resolution systems are examples of", options: ["Knowledge management systems", "Transaction processing systems", "Enterprise collaboration systems", "Decision support systems"], answer: 0 },
-            { id: 45, question: "Support operations or management processes that provide a firm with strategic products, services, And capabilities for competitive advantage.", options: ["Strategic information systems", "Expert Systems", "Enterprise collaboration systems", "Decision support systems"], answer: 0 },
-            { id: 46, question: "Online stock trading, shipment tracking, and Ecommerce Web systems are examples of...", options: ["Management information systems", "Transaction processing systems", "Enterprise collaboration systems", "Strategic information systems"], answer: 3 },
-            { id: 47, question: "Information systems that support applications in accounting, finance, marketing, and human resource management are examples of...", options: ["Functional business systems", "Decision support systems", "Management information systems", "Transaction processing systems"], answer: 0 },
-            { id: 48, question: "Support a variety of operational and managerial applications of the basic business functions of a company.", options: ["Enterprise collaboration systems", "Decision support systems", "Management information systems", "Functional business systems"], answer: 3 },
-            { id: 49, question: "Systems are designed to correct a lack of communication among the functional area of information Systems with one another.", options: ["Enterprise Resources Planning (ERP)", "Business Intelligence Systems", "Supply Chain Management", "Customer Relationship Management"], answer: 0 },
-            { id: 50, question: "Staff within the IT department includes:", options: ["System administrators", "Software engineers", "Technicians", "All of the above"], answer: 3 },
-            { id: 51, question: "Consists of an enormously diverse set of technologies for transmitting and managing health information", options: ["PHR", "HIT", "EHR", "MIS"], answer: 1 },
-            { id: 52, question: "Collects information about patients who are affected by a particular condition", options: ["Computerized physician order entry (CPOE)", "E-Prescribing", "Patient Registries", "Medical kiosks"], answer: 2 },
-            { id: 53, question: "Patient Registries include...", options: ["Patient self-reported", "Professional reported", "Combination of both", "All of the above"], answer: 3 },
-            { id: 54, question: "National registries are generally set-up for conditions where there is enough patients present in that country", options: ["True", "False"], answer: 0 },
-            { id: 55, question: "International registries are developed for...", options: ["Common conditions", "Rare conditions", "ultra-rare' conditions", "All of the above"], answer: 2 },
-            { id: 56, question: "The process of a medical professional entering instructions electronically and sending medication orders and treatment", options: ["Computerized Physician Order Entry", "E-Prescribing", "Medical kiosks", "None of the above"], answer: 0 },
-            { id: 57, question: "CPOE can enhance patient safety by reducing or eliminating medication errors", options: ["True", "False"], answer: 0 },
-            { id: 58, question: "In CPOE, Physician orders can be entered into a", options: ["workstation", "laptop", "secure mobile device", "All of the above"], answer: 3 },
-            { id: 59, question: "The CPOE system can accept and manage orders from certain departments at the point of care through various devices,", options: ["True", "False"], answer: 1 },
-            { id: 60, question: "The computer-based electronic generation, transmission, and filling of a medical prescription", options: ["Computerized Physician Order Entry", "E-Prescribing", "Medical kiosks", "None of the above"], answer: 1 },
-            { id: 61, question: "E-prescribing can improve health and reduce costs because it can:", options: ["Reduce prescribing errors", "Slow receipt of prescribed drugs", "Increase the prescription work", "All of the above"], answer: 0 },
-            { id: 62, question: "Diagnostic kiosks can be used to address shortages of physicians in rural areas", options: ["True", "False"], answer: 0 },
-            { id: 63, question: "A robust, reliable and user friendly healthcare solution through which patients can check and get instant health information.", options: ["Self-diagnosis Kiosk", "Check-in Kiosks", "Remote diagnostic kiosks", "All of the above"], answer: 2 },
-            { id: 64, question: "The actual steps necessary to obtain, retrieve, send, and receive data from one computer to another", options: ["Applications", "Processes", "Devices", "HIPAA"], answer: 1 },
-            { id: 65, question: "Healthcare providers, institutions and vendors must comply with it in any and all exchange of personal health information", options: ["Applications", "Devices", "Processes", "HIPAA"], answer: 3 },
-            { id: 66, question: "The various hardware components that make HIT work", options: ["Devices", "Processes", "Applications", "HIPAA"], answer: 0 },
-            { id: 67, question: "An electronic record of health-related information on an individual that can be created, gathered, and managed within one health care organization", options: ["PHR", "EHR", "EMR", "None of the above"], answer: 2 },
-            { id: 68, question: "An electronic record of health-related information on an individual that can be created, managed, and consulted across more than one health care organization", options: ["PHR", "EHR", "EMR", "All of the above"], answer: 1 },
-            { id: 69, question: "An electronic record of health-related information on an individual that can be drawn from multiple sources while being managed, shared, and controlled by the individual.", options: ["EMR", "PHR", "EHR", "All of the above"], answer: 1 },
-            { id: 70, question: "The electronic movement of health-related information among organizations according to nationally recognized standards", options: ["Health Information Organization", "Health Information Exchange", "Health Information Technology", "None of the above"], answer: 1 },
-            { id: 71, question: "The various sets of standards that are necessary in order for HIT systems to communicate with each other in a uniform manner", options: ["Coding standards", "Messaging standards", "Communications Standards", "All of the above"], answer: 2 },
-            { id: 72, question: "HL7, ADT, NCPDP, X12, and DICOM are examples of...", options: ["Coding standards", "Messaging standards", "Communications Standards", "All of the above"], answer: 1 },
-            { id: 73, question: "The form and structure that is required for the information to move from one system to another", options: ["Coding standards", "Messaging standards", "Communications Standards", "All of the above"], answer: 1 },
-            { id: 74, question: "Used to communicate events about a patient to different clinical systems within a hospital.", options: ["ADT messages", "LOINC", "HL7", "All of the above"], answer: 0 },
-            { id: 75, question: "A set of international standards for transfer of clinical and administrative data between software applications used by various healthcare providers", options: ["LOINC", "HL7", "ADT messages", "None of the above"], answer: 1 },
-            { id: 76, question: "Universal standard for laboratory test names.", options: ["ADT messages", "HL7", "None of the above", "LOINC"], answer: 3 },
-            { id: 77, question: "The ability of a system to work with or use the parts or equipment of another system", options: ["Interoperability", "Security", "Exchangeability", "None of the above"], answer: 0 },
-            { id: 78, question: "HIT has the following benefits except :", options: ["Reduced paperwork", "Rapid information sharing", "Better follow-up", "increase tests"], answer: 3 },
-            { id: 79, question: "Is a computer based system that is designed for collecting, storing, manipulating and making available clinical information important to the healthcare delivery process.", options: ["Clinical Information System (CIS)", "Decision Support system", "Enterprise collaboration systems", "Management information systems"], answer: 0 },
-            { id: 80, question: "Provides users with the tools to acquire, manipulate, apply and display appropriate information to aid in the making of correct, timely and evidence-based clinical decisions", options: ["Expert systems", "Transaction processing systems", "Clinical Decision Support System (CDSS)", "Management information systems"], answer: 2 },
-            { id: 81, question: "Clinical Information Systems can provide convenient access to medical records at all points of care", options: ["True", "False"], answer: 0 },
-            { id: 82, question: "Clinical Information Systems has negative effect on drug dosing and this leads to an adverse drug interactions", options: ["True", "False"], answer: 1 },
-            { id: 83, question: "Some of the barriers of CIS (Clinical Information System):", options: ["Privacy and Security", "Initial cost of acquisition", "Clinician Resistance", "All of the above"], answer: 3 },
-            { id: 84, question: "The PHR is the larger system that includes the EHR and EMR and interfaces with multiple other electronic systems locally, regionally and nationally", options: ["True", "False"], answer: 1 },
-            { id: 85, question: "The paper record is severely limited due to its :", options: ["legibility", "structure", "A and B", "Negative impact on the environment"], answer: 2 },
-            { id: 86, question: "EHRs will have an electronic problem summary list that outlines:", options: ["A patient's major illnesses", "Surgeries", "Allergies", "All of the above"], answer: 3 },
-            { id: 87, question: "Electronic health records are accessible to multiple healthcare workers at the same time, at Multiple locations.", options: ["True", "False"], answer: 0 },
-            { id: 88, question: "Of the newest features of a comprehensive EHR", options: ["Embedded educational content for clinicians", "Clinical practice guidelines", "patient handouts", "All of the above"], answer: 0 },
-            { id: 89, question: "The option means that the EHR software and patient data reside on a remote web server that we access via the Internet from the office, hospital or home.", options: ["centralized area for all physician", "application service provider (ASP)", "Clinical decision-support", "CPOE"], answer: 1 },
-            { id: 90, question: "EHRs are also known as:", options: ["EMRs", "CMRs", "ECIS", "All of the above"], answer: 3 },
-            { id: 91, question: "Include alerts, reminders and clinical practice guidelines.", options: ["Electronic patient encounter", "Secure messaging", "Clinical Decision Support Systems", "All of the above"], answer: 2 },
-            { id: 92, question: "CDSS is any software designed to directly aid in clinical decision making in which characteristics of individual patients are matched to a computerized knowledge base", options: ["True", "False"], answer: 0 },
-            { id: 93, question: "The number of levels of CDSSs are:", options: ["Only one level", "Four levels", "Seven levels", "Ten levels"], answer: 3 },
-            { id: 94, question: "is a Massachusetts-based company that sells EMR, practice management and PHR software and services to healthcare providers", options: ["UpToDate", "IConsult", "eClinical Works", "None of the above"], answer: 2 },
-            { id: 95, question: "Is a primary care information database (offered by Elsevier) available for integration into EHRs", options: ["IConsult", "ICD-9", "Infobuttons", "None of the above"], answer: 0 },
-            { id: 96, question: "The International Classification of Diseases is designed to promote international comparability in mortality statistics", options: ["IConsult", "Infobuttons", "ICD-9", "None of the above"], answer: 2 },
-            { id: 97, question: "when clicked, access online knowledge resources tailored to the patient, care setting, or task", options: ["Infobuttons", "ICD-9", "IConsult", "None of the above"], answer: 0 },
-            { id: 98, question: "groups of pre-established instructions that are related to a symptom or diagnoses", options: ["Order sets and protocols", "Radiology CDS", "Laboratory CDS", "Differential Diagnoses"], answer: 0 },
-            { id: 99, question: "Clinical decisions support that alerts clinicians to the indications for a test, as well as the price.", options: ["Laboratory CDS", "Differential Diagnoses", "Radiology CDS", "Order sets and protocols"], answer: 0 },
-            { id: 100, question: "clinical decision support to try to improve ordering imaging studies", options: ["Laboratory CDS", "Differential Diagnoses", "Order sets and protocols", "Radiology CDS"], answer: 3 },
-            { id: 101, question: "Assists clinicians by generating analysis based on user input of patient signs and symptoms, laboratory results, and other clinical findings.", options: ["Order sets and protocols", "Laboratory CDS", "Differential Diagnoses", "Radiology CDS"], answer: 2 },
-            { id: 102, question: "OpenVista, WorldVistA, and PracticeFusion are.........", options: ["Comprehensive EHR", "Low Cost EHR", "open-source EHRs", "None of the above"], answer: 2 },
-            { id: 103, question: "Medical Office Online, SoapWare, and E-MDS are..", options: ["Low Cost EHR", "open-source EHRs", "Comprehensive EHR", "None of the above"], answer: 0 },
-            { id: 104, question: "AHLTA, eClinicalWorks, and VISTA are..........", options: ["Comprehensive EHR", "Low Cost EHR", "open-source EHRs", "None of the above"], answer: 0 },
-            { id: 105, question: "Barriers to Electronic Health Record Adoption", options: ["Privacy, confidentiality concerns", "Challenges to data entry", "Difficulties with integrating", "All of the above"], answer: 3 },
-            { id: 106, question: "Means that the upload speed is slower than the download speeds", options: ["ADSL", "DSL", "Dial-up modem", "None of the above"], answer: 0 },
-            { id: 107, question: "The maximum data transfer rate is obtained through....", options: ["T-1 line", "Wi-Max", "Fiber optic cable", "DSL"], answer: 2 },
-            { id: 108, question: "The minimum data transfer rate is obtained through....", options: ["T-1 line", "Wi-Max", "Dial-up modem", "DSL"], answer: 2 },
-            { id: 109, question: "The size of the pipe to transmit packets", options: ["Bandwidth", "Jitter", "Topology", "None of the above"], answer: 0 },
-            { id: 110, question: "The latency in receiving a packet", options: ["End-to-end delay", "Bandwidth", "Jitter", "None of the above"], answer: 0 },
-            { id: 111, question: "The random variation in packet delay and reflects Internet spikes in activity", options: ["Jitter", "An encryption technique", "End-to-end delay", "Bandwidth"], answer: 0 },
-            { id: 112, question: "Encodes the content of each packet so that it can't be read while being transmitted on the Internet.", options: ["Bandwidth", "Jitter", "An encryption technique", "None of the above"], answer: 2 },
-            { id: 113, question: "Designed to connect an assortment of devices at a maximum distance of about 30 feet.", options: ["Local Area Networks (LANs)", "Personal Area Networks (PANs)", "Global Area Networks (GANS)", "Wide Area Networks (WANs)"], answer: 1 },
-            { id: 114, question: "Is a network protocol and most networks are connected by fiber or twisted-pair/copper wire connections", options: ["hub", "Wi-Fi", "Modem", "Ethernet"], answer: 3 },
-            { id: 115, question: "wireless networks are faster, less expensive and more secure than Ethernet networks", options: ["True", "False"], answer: 1 },
-            { id: 116, question: "To connect several computers in a home or office scenario you will need a", options: ["hub", "Router", "switch", "None of the above"], answer: 0 },
-            { id: 117, question: "Direct messages between networks and the Internet", options: ["hub", "Router", "switch", "None of the above"], answer: 1 },
-            { id: 118, question: "Wireless networks are based on the Institute of Electrical and Electronics Engineers (IEEE) 802.11 standard", options: ["Global Area Networks (GANs)", "Personal Area Networks (PANs)", "Local Area Networks (LANs)", "Wide Area Networks (WANs)"], answer: 2 },
-            { id: 119, question: "The mode that utilizes a wireless router or access point is known as", options: ["The infrastructure mode", "peer-to-peer mode", "Client- server mode", "None of the above"], answer: 0 },
-            { id: 120, question: "The Internet could be considered as a", options: ["Global Area Network (GAN)", "Personal Area Network (PAN)", "Wide Area Network (WAN)", "Local Area Network (LAN)"], answer: 2 },
-            { id: 121, question: "The top healthcare worries prompting Internet searches were arranged as", options: ["Quality, Cost, Medical errors, and others.", "Cost, Quality, Medical errors, and others.", "Medical errors, Cost, Quality, and others.", "Cost, Medical errors, Quality, and others."], answer: 1 },
-            { id: 122, question: "provides a patient with a simple differential diagnosis of what might be wrong with them", options: ["health calculators", "Care Pages", "Symptom checker tool", "None of the above"], answer: 2 },
-            { id: 123, question: "Web-based programs that patients can access for health related services.", options: ["Web applications", "Web portals", "Web servers", "None of the above"], answer: 1 },
-            { id: 124, question: "The information that will follow you even when there is a job, insurer or clinician change is", options: ["Auto-populated", "Portable", "Interoperable", "None of the above"], answer: 1 },
-            { id: 125, question: "Mean that clinical and test results would be inputted automatically", options: ["Portable", "Auto-populated", "Interoperable", "None of the above"], answer: 1 },
-            { id: 126, question: "Means that PHR format can be shared among disparate partners", options: ["Auto-populated", "Portable", "Interoperable", "None of the above"], answer: 2 },
-            { id: 127, question: "PHR which connected to one platform and not interoperable.", options: ["Standalone.", "Networked.", "Untethered PHR", "Tethered PHR"], answer: 3 },
-            { id: 128, question: "An XML-based standard for the movement of 'documents' between clinical applications.", options: ["CCD", "CCR", "EMR", "EHR"], answer: 1 },
-            { id: 129, question: "The result of a collaborative effort between (HL7) and (ASTM) to harmonize the data format", options: ["CCR", "EHR", "CCD", "EMR"], answer: 2 },
-            { id: 130, question: "Electronic visits (e-visits or virtual visits) are an example of tele-health or telemedicine where medical care is delivered remotely.", options: ["True", "False"], answer: 0 },
-
-            // Bank 2: Questions 131-165 from "Medical informatics (محلول).pdf"
-            { id: 131, question: "..............is the intersection of information science, computer science, and health care?", options: ["Health information management", "Health information exchange", "Health information technology", "Health informatics"], answer: 3 },
-            { id: 132, question: ".....is an academic field which is primarily concerned with analysis, collection, classification, manipulation, storage, retrieval, movement, and dissemination of information.", options: ["Computer science", "Health care science", "Information science", "None of the above"], answer: 2 },
-            { id: 133, question: "......is the prevention, treatment, and management of illness and the promotion of health and wellbeing through the services offered by the medical, nursing, and allied health professions.", options: ["Computer science", "Health care science", "Information science", "None of the above"], answer: 1 },
-            { id: 134, question: "Medical informatics is also called all of the following except..", options: ["Clinical informatics", "Nursing informatics", "Bioinformatics", "Healthcare informatics"], answer: 2 },
-            { id: 135, question: "is defined as the analysis of biological information using computers and statistical techniques", options: ["Clinical informatics", "Nursing informatics", "Bioinformatics", "Healthcare informatics"], answer: 2 },
-            { id: 136, question: "The world's first professional informatics organization was developed in", options: ["1970", "1960", "1949", "1980"], answer: 2 },
-            { id: 137, question: "The world's first specialized university departments and informatics training programs were developed in", options: ["1970s", "1960s", "1950s", "1980s"], answer: 1 },
-            { id: 138, question: "In .....Health Informatics, education, and infrastructure has been one of the top priorities in the implementation of health programs", options: ["1970s", "1960s", "1950s", "1980s"], answer: 0 },
-            { id: 139, question: "ASTM established the first standards in healthcare data reporting which include", options: ["laboratory data exchange", "message exchange", "health information security system", "All of the above"], answer: 3 },
-            { id: 140, question: "Health Informatics professionals still face the challenge of achieving interoperability between different formats to make information available across all areas of the healthcare sector.", options: ["Right", "wrong"], answer: 0 },
-            { id: 141, question: "Healthcare organizations are forced to utilize ready-made programming solutions to make dissimilar systems compatible for information exchange.", options: ["Right", "wrong"], answer: 1 },
-            { id: 142, question: "Is the period which plays an important role in laying the foundation of the \"new emerging information technology", options: ["1975-1990", "1990-2000", "1950-1975", "None of the above"], answer: 2 },
-            { id: 143, question: "The period 1975-1990 can be characterized by.", options: ["The establishment of the first national and international alliances", "Emerging of bioinformatics courses and schools", "foundation of specific MI conferences", "All of the above"], answer: 3 },
-            { id: 144, question: "Governments created national strategies for implantation of medical bioinformatics", options: ["1975-1990", "1990-2000", "1950-1975", "None of the above"], answer: 1 },
-            { id: 145, question: "In .........Cooperation between the European countries and USA made to keep the MI research successful", options: ["1975-1990", "2000-2010", "1950-1975", "None of the above"], answer: 1 },
-            { id: 146, question: "The data pyramid consists of", options: ["Two levels", "Three levels", "Four Levels", "Five Levels"], answer: 2 },
-            { id: 147, question: "The largest amount of data volume in the data pyramid exists in", options: ["base of the pyramid", "middle of the pyramid", "Top of the pyramid", "All of the above"], answer: 0 },
-            { id: 148, question: "The largest amount of data value in the data pyramid exists in the", options: ["base of the pyramid", "middle of the pyramid", "Top of the pyramid", "All of the above"], answer: 2 },
-            { id: 149, question: "The result of the following equation: Data + Context =", options: ["Knowledge", "Wisdom", "Information", "None of the above"], answer: 2 },
-            { id: 150, question: "The result of the equation: Knowledge+ Experience", options: ["Knowledge", "Wisdom", "Information", "None of the above"], answer: 1 },
-            { id: 151, question: "The result of the equation: Information + Rules =", options: ["Knowledge", "Wisdom", "Information", "None of the above"], answer: 0 },
-            { id: 152, question: "allow the physicians to share their important patient information, including illnesses, medications, therapies, diagnosis, tests and any other pertinent information", options: ["Knowledge", "MIS", "EHR", "None of the above"], answer: 2 },
-            { id: 153, question: "...............defined as the mobilization of healthcare information electronically across organizations within a region, community or hospital system?", options: ["medical informatics", "medical information exchange", "medical information technology", "medical information management"], answer: 1 },
-            { id: 154, question: "..... are computer programs designed to assist physicians and other health professionals with decision making tasks?", options: ["electronic health records", "clinical decision support systems", "computerized provider order entry", "telemedicine"], answer: 1 },
-            { id: 155, question: "Medical information technology is the practice of maintenance and care of health records by traditional and electronic means in hospitals, physician's office clinics, health departments, health insurance companies, and other facilities that provide health care or maintenance of health records.", options: ["Right", "wrong"], answer: 1 },
-            { id: 156, question: "Interoperable Medical IT will improve individual patient care, but it will also bring many public health benefits including early detection of infectious disease outbreaks around the country.", options: ["Right", "wrong"], answer: 0 },
-            { id: 157, question: "Medical informatics tools include only computers.", options: ["Right", "wrong"], answer: 1 },
-            { id: 158, question: "Medical information quality and safety require that the right information be available at the right time to support patient care and health system management decisions.", options: ["Right", "wrong"], answer: 0 },
-            { id: 159, question: "Broad and consistent utilization of HIT will increase paperwork.", options: ["Right", "wrong"], answer: 1 },
-            { id: 160, question: "Paper records require a significant amount of storage space compared to digital records.", options: ["Right", "wrong"], answer: 0 },
-            { id: 161, question: "The following are common goals of different groups in medical informatics except:", options: ["Provide better return on investment", "Improve the quality of care", "Increase of tests or prescriptions ordered", "Reduce medical errors"], answer: 2 },
-            { id: 162, question: ".utilize information technology in Nationwide Health Information Network, Financial support for HER adoption, and Information technology pilot projects", options: ["Patients", "Clinicians", "governments", "Researchers"], answer: 2 },
-            { id: 163, question: "utilize information technology in Video teleconferencing, web conferencing, and podcasts", options: ["Medical Educators", "Clinicians", "governments", "Researchers"], answer: 0 },
-            { id: 164, question: "....utilize information technology in Nationwide Health Information Network, Financial support for HER adoption, and Information technology pilot projects", options: ["Patients", "Clinicians", "governments", "Researchers"], answer: 2 },
-            { id: 165, question: ".utilize information technology Geographic information systems to link disease outbreaks with geography", options: ["Patients", "Clinicians", "Public Health", "Researchers"], answer: 2 }
+            { id: 1, question: "What is the primary definition of medical writing according to the sources?", options: ["Creative storytelling about medical experiences.", "Creating scientific documents that communicate medical information clearly and accurately.", "Writing prescriptions and medical orders only.", "Journalism focused on health insurance policies."], answer: 1 },
+            { id: 2, question: "Which 11th-century Arabic text became a staple in Eastern and Western medical schools for centuries?", options: ["The Hippocratic Corpus.", "The Lancet.", "Avicenna's Canon of Medicine.", "The British Medical Journal."], answer: 2 },
+            { id: 3, question: "What are the three pillars of effective medical writing?", options: ["Speed, Complexity, and Volume.", "Accuracy, Clarity, and Structure.", "Jargon, Data, and Length.", "Emotion, Persuasion, and Creativity."], answer: 1 },
+            { id: 4, question: "According to the sources, writing is a clinical skill comparable to:", options: ["Performing complex neurosurgery.", "Taking a patient's history or interpreting an ECG.", "Hospital administration.", "Medical coding."], answer: 1 },
+            { id: 5, question: "What does the source suggest regarding the use of medical jargon?", options: ["It should be used as much as possible to sound professional.", "It should be avoided unless the audience is trained to understand it.", "It is never appropriate in medical writing.", "It is only useful for social media."], answer: 1 },
+            { id: 6, question: "Which principle is considered the \"Ethical Backbone\" of medical writing?", options: ["Clarity.", "Structure.", "Accuracy.", "Audience-Specificity."], answer: 2 },
+            { id: 7, question: "If a student writes \"Type 1 diabetes controlled with metformin,\" they are failing which core principle?", options: ["Structure.", "Accuracy.", "Guideline adherence.", "Language evolution."], answer: 1 },
+            { id: 8, question: "The \"5 C's Framework\" in patient education writing includes Clear, Concise, Consistent, Culturally Sensitive, and:", options: ["Clinical.", "Comprehensive.", "Caring.", "Complex."], answer: 2 },
+            { id: 9, question: "When writing for patients, what is the recommended reading level?", options: ["Grade 12 or higher.", "Graduate level.", "Grade 6-8.", "Kindergarten level."], answer: 2 },
+            { id: 10, question: "The shift from the term \"compliance\" to \"adherence\" reflects a focus on:", options: ["Financial goals.", "Partnership over authority.", "Stricter rules for patients.", "Simplified spelling."], answer: 1 },
+            { id: 11, question: "The standard structure for most formal scientific papers is known as:", options: ["SOAP.", "CARE.", "IMRAD.", "PRISMA."], answer: 2 },
+            { id: 12, question: "In the IMRAD model, which section answers the question \"Why did we do this?\"", options: ["Methods.", "Results.", "Introduction.", "Discussion."], answer: 2 },
+            { id: 13, question: "What is the main goal of the Methods section in a scientific paper?", options: ["To interpret the results for the reader.", "To allow another researcher to replicate the study exactly.", "To provide a long literature review.", "To list all authors' affiliations."], answer: 1 },
+            { id: 14, question: "Which section of a scientific paper transforms results into meaning and explains their implications?", options: ["Results.", "Methods.", "Discussion.", "Abstract."], answer: 2 },
+            { id: 15, question: "What is \"Data Fabrication\"?", options: ["Rewording a sentence from another paper.", "Making up results that never existed.", "Omitting a citation by mistake.", "Translating data into another language."], answer: 1 },
+            { id: 16, question: "What is the purpose of MeSH (Medical Subject Headings)?", options: ["To check for grammar errors.", "To provide standardized indexing terms for research discoverability.", "To list all medical school faculty.", "To write catchy titles for social media."], answer: 1 },
+            { id: 17, question: "A \"Double-blind\" peer review means:", options: ["The editor does not know the author or the reviewer.", "Neither the authors nor the reviewers know each other's identities.", "The reviewer is blindfolded during the process.", "The paper is reviewed by two different journals simultaneously."], answer: 1 },
+            { id: 18, question: "The International Committee of Medical Journal Editors (ICMJE) requires how many criteria to be met for authorship?", options: ["One.", "Two.", "Three.", "Four."], answer: 3 },
+            { id: 19, question: "Which guideline is specifically used for reporting case reports?", options: ["PRISMA.", "CONSORT.", "CARE.", "STROBE."], answer: 2 },
+            { id: 20, question: "In a systematic review, what does the \"P\" in PICO stand for?", options: ["Plan.", "Patient/Problem.", "Procedure.", "Publication."], answer: 1 },
+            { id: 21, question: "What is a Meta-analysis?", options: ["A short summary of a single case.", "A descriptive overview of vaccine mechanisms.", "A statistical combination of results from multiple studies.", "A review of medical history."], answer: 2 },
+            { id: 22, question: "What is the \"Golden Rule\" for abstracts?", options: ["Use as many abbreviations as possible.", "Write it first before the paper.", "Write it last after completing the paper.", "Include at least five references."], answer: 2 },
+            { id: 23, question: "Which tool is used to visualize pooled effects in a meta-analysis?", options: ["Funnel plot.", "Pie chart.", "Forest plot.", "Bar graph."], answer: 2 },
+            { id: 24, question: "\"Mosaic plagiarism\" involves:", options: ["Reusing your own previously published work.", "Mixing someone else's words with your own while keeping their structure.", "Copying a chart exactly.", "Fabricating patient data."], answer: 1 },
+            { id: 25, question: "The 10-20-30 Rule for presentations suggests 10 slides, 20 minutes, and:", options: ["30 references.", "30 images.", "30-point font.", "30 audience members."], answer: 2 },
+            { id: 26, question: "What is the primary purpose of clinical documentation?", options: ["To increase hospital revenue.", "To ensure continuity of care and legal accuracy.", "To practice creative writing.", "To replace patient interaction."], answer: 1 },
+            { id: 27, question: "In a SOAP note, where would you document the patient's chief complaint in their own words?", options: ["Subjective.", "Objective.", "Assessment.", "Plan."], answer: 0 },
+            { id: 28, question: "In which SOAP section would you find measurable findings like \"BP 138/82 mmHg\"?", options: ["Subjective.", "Objective.", "Assessment.", "Plan."], answer: 1 },
+            { id: 29, question: "The Assessment section of a SOAP note is used to:", options: ["Record the history of present illness.", "List future laboratory tests.", "Synthesize data into clinical meaning or a diagnosis.", "Note the patient's insurance details."], answer: 2 },
+            { id: 30, question: "What is the legal assumption regarding medical documentation?", options: ["If it's written, it must be true.", "If it's not written, it wasn't done.", "Patients are not allowed to read their own notes.", "Handwriting is more credible than typed notes."], answer: 1 },
+            { id: 31, question: "Which of the following is a common SOAP pitfall?", options: ["Using too few abbreviations.", "Copying and pasting from old notes without updating.", "Signing the note with your credentials.", "Recording only observed facts."], answer: 1 },
+            { id: 32, question: "When correcting an error in a paper medical record, you should:", options: ["Use correction fluid to hide the error.", "Scribble over it until it is unreadable.", "Draw a single line through it, mark \"error,\" and initial.", "Throw the page away and start over."], answer: 2 },
+            { id: 33, question: "What is a significant advantage of Electronic Medical Records (EMRs)?", options: ["They prevent all medical errors.", "They offer decision support alerts for drug interactions.", "They are faster to use than drawing diagrams by hand.", "They eliminate the need for clinical reasoning."], answer: 1 },
+            { id: 34, question: "\"Chart cloning\" refers to:", options: ["Making a backup copy of a file.", "Propagating outdated data via copy-paste in EMRs.", "Giving the same diagnosis to multiple patients.", "Translating a chart into another language."], answer: 1 },
+            { id: 35, question: "When should a medical note ideally be written?", options: ["At the end of the week.", "Immediately after the patient encounter.", "Only if the patient complains.", "After the patient is discharged."], answer: 1 },
+            { id: 36, question: "Which platform is described as a hub for research updates and academic dialogue?", options: ["Instagram.", "TikTok.", "Twitter/X.", "Facebook."], answer: 2 },
+            { id: 37, question: "What is the primary focus of medical writing on Instagram?", options: ["Long-form research papers.", "Professional networking for jobs.", "Visuals, infographics, and reels.", "Encrypted messaging."], answer: 2 },
+            { id: 38, question: "The E-A-R framework for managing misinformation stands for:", options: ["Evaluate, Analyze, Report.", "Empathize, Address, Refer.", "Edit, Authorize, Release.", "Engage, Argue, Refute."], answer: 1 },
+            { id: 39, question: "Which of the following is a \"Don't\" for professional social media content?", options: ["Citing credible sources.", "Posting identifiable patient photos without consent.", "Maintaining a professional tone.", "Using hashtags like #MedEd."], answer: 1 },
+            { id: 40, question: "How does the source suggest handling personal vs. professional social media accounts?", options: ["They should always be mixed to show authenticity.", "Keep them 100% personal only.", "Avoid mixing them in ways that blur ethical boundaries.", "Only use professional accounts."], answer: 2 },
+            { id: 41, question: "What is the \"Medical Writer's Role\" in AR/VR health education?", options: ["Designing the 3D software code.", "Scripting scenarios, voice-overs, and instructional guides.", "Selling the hardware to hospitals.", "Testing the equipment for physical safety."], answer: 1 },
+            { id: 42, question: "In medical translation, what is \"Back translation\"?", options: ["Translating from the end of the document to the beginning.", "Translating to a target language, then back to the original to compare meaning.", "Translating only the background section.", "Using Google Translate for everything."], answer: 1 },
+            { id: 43, question: "What is an ethical guardrail for using AI in medical writing?", options: ["AI should replace human writers to save time.", "AI suggestions must be reviewed by trained professionals.", "Never disclose that AI was used.", "AI should generate all the research data."], answer: 1 },
+            { id: 44, question: "A freelance medical writer's work is typically:", options: ["Fixed schedule in a hospital.", "Project-based with global clients.", "Focused only on surgery.", "Unpaid volunteering."], answer: 1 },
+            { id: 45, question: "Which organization offers certifications for medical writers in Europe?", options: ["WHO.", "EMWA.", "CDC.", "HIPAA."], answer: 1 },
+            { id: 46, question: "\"Imposter Syndrome\" in medical writing is defined as:", options: ["Pretending to be a doctor online.", "Feeling unqualified despite having medical training.", "Using someone else's name on a paper.", "Forgetting medical terminology."], answer: 1 },
+            { id: 47, question: "What is the \"Writer's Oath\" core message?", options: ["Publish as many papers as possible.", "Communicate truthfully and educate with empathy.", "Avoid writing for patients.", "Use the most complex words possible."], answer: 1 },
+            { id: 48, question: "When working with translators, a medical writer should:", options: ["Use machine translation without review.", "Provide a glossary of key terms.", "Avoid checking the final draft.", "Translate word-for-word literally."], answer: 1 },
+            { id: 49, question: "In the future (2035), medical communication is expected to be:", options: ["Only on paper.", "Immersive and predictive.", "Controlled by a single global agency.", "Performed only by AI."], answer: 1 },
+            { id: 50, question: "The purpose of the book is to show that medical writing is:", options: ["Only for professional authors.", "An \"extra\" work of medicine.", "The evidence that medicine was done.", "A way to avoid clinical duties."], answer: 2 }
         ];
 
-        // Working variables
+        // App state
         let questionsList = []; 
         let currentIndex = 0;
         let selectedOption = null;
         let isAnswerChecked = false;
         let score = 0;
-        let userAnswers = []; // To track answers for the current session
+        let userAnswers = []; 
+        let repeatHandled = []; // Tracks if the repeat/skip modal has been processed for this index
         let timer = 0;
         let timerInterval;
+        let isExamMode = false;
+        const EXAM_TIME_LIMIT = 900; // 15 minutes
 
-        function startQuiz(shuffle) {
-            // Clone original data
+        function requestStartPoint() {
+            document.getElementById('start-picker-modal').classList.remove('hidden');
+        }
+
+        function closeStartPicker() {
+            document.getElementById('start-picker-modal').classList.add('hidden');
+        }
+
+        function confirmStartPoint() {
+            let val = parseInt(document.getElementById('start-q-input').value);
+            if (isNaN(val) || val < 1) val = 1;
+            if (val > 50) val = 50;
+            
+            document.getElementById('start-picker-modal').classList.add('hidden');
+            startQuiz('order', val);
+        }
+
+        function startQuiz(mode, startAt = 1) {
+            isExamMode = (mode === 'exam');
             questionsList = [...QUESTIONS_DATA];
             
-            if (shuffle) {
-                // Fisher-Yates shuffle
+            if (mode === 'shuffle' || mode === 'exam') {
                 for (let i = questionsList.length - 1; i > 0; i--) {
                     const j = Math.floor(Math.random() * (i + 1));
                     [questionsList[i], questionsList[j]] = [questionsList[j], questionsList[i]];
                 }
             }
 
-            // Reset state
-            currentIndex = 0;
+            currentIndex = startAt - 1; // Zero-based
             selectedOption = null;
             isAnswerChecked = false;
             score = 0;
             userAnswers = new Array(questionsList.length).fill(null);
-            timer = 0;
+            repeatHandled = new Array(questionsList.length).fill(false);
+            
+            // Set Timer
+            if (isExamMode) {
+                timer = EXAM_TIME_LIMIT;
+                document.getElementById('mode-badge').classList.remove('hidden');
+                document.getElementById('stats-container').classList.add('opacity-30', 'pointer-events-none');
+            } else {
+                timer = 0;
+                document.getElementById('mode-badge').classList.add('hidden');
+                document.getElementById('stats-container').classList.remove('opacity-30', 'pointer-events-none');
+            }
 
-            // UI Updates
             document.getElementById('setup-modal').classList.add('hidden');
             document.getElementById('quiz-container').classList.remove('hidden');
             document.getElementById('total-q-num').innerText = questionsList.length;
@@ -405,27 +347,40 @@
         function restartApp() {
             clearInterval(timerInterval);
             document.getElementById('results-screen').classList.add('hidden');
+            document.getElementById('quiz-container').classList.add('hidden');
             document.getElementById('setup-modal').classList.remove('hidden');
         }
 
         function startTimer() {
             clearInterval(timerInterval);
+            const display = document.getElementById('timer-display');
+            const wrapper = document.getElementById('timer-wrapper');
+            wrapper.classList.remove('exam-timer-critical');
+
             timerInterval = setInterval(() => {
-                timer++;
-                document.getElementById('timer-display').innerText = formatTime(timer);
+                if (isExamMode) {
+                    timer--;
+                    if (timer <= 60) wrapper.classList.add('exam-timer-critical');
+                    if (timer <= 0) {
+                        clearInterval(timerInterval);
+                        finishQuiz();
+                        return;
+                    }
+                } else {
+                    timer++;
+                }
+                display.innerText = formatTime(timer);
             }, 1000);
         }
 
         function formatTime(seconds) {
-            const mins = Math.floor(seconds / 60);
-            const secs = seconds % 60;
+            const mins = Math.floor(Math.abs(seconds) / 60);
+            const secs = Math.abs(seconds) % 60;
             return `${mins}:${secs.toString().padStart(2, '0')}`;
         }
 
         function renderQuestion() {
             const question = questionsList[currentIndex];
-            // Calculate progress based on current index vs total current list length
-            // Note: If repeating questions extends the list, progress bar adapts
             const progress = ((currentIndex + 1) / questionsList.length) * 100;
             
             document.getElementById('question-text').innerText = question.question;
@@ -438,14 +393,19 @@
             const container = document.getElementById('options-container');
             container.innerHTML = '';
 
+            const savedAnswer = userAnswers[currentIndex];
+            if (savedAnswer !== null && savedAnswer !== undefined) {
+                isAnswerChecked = true;
+                selectedOption = savedAnswer;
+            }
+
             question.options.forEach((option, idx) => {
                 const isSelected = selectedOption === idx;
                 const isCorrect = question.answer === idx;
                 
                 let classes = "group w-full text-left p-4 sm:p-5 rounded-xl sm:rounded-2xl border-2 transition-all flex items-center justify-between relative active:scale-[0.98] cursor-pointer ";
                 
-                if (isAnswerChecked) {
-                    // Disable hover effects
+                if (isAnswerChecked && !isExamMode) {
                     classes += "cursor-default ";
                     if (isCorrect) {
                         classes += "bg-emerald-50 dark:bg-emerald-950/30 border-emerald-500 text-emerald-900 dark:text-emerald-300";
@@ -454,6 +414,10 @@
                     } else {
                         classes += "bg-white dark:bg-slate-900 border-slate-100 dark:border-slate-800 text-slate-400 dark:text-slate-600 opacity-60";
                     }
+                } else if (isAnswerChecked && isExamMode) {
+                    classes += isSelected 
+                        ? "bg-indigo-50 dark:bg-indigo-900/30 border-indigo-500 text-indigo-900 dark:text-indigo-300 shadow-md" 
+                        : "bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-300 dark:text-slate-700 opacity-50";
                 } else {
                     classes += isSelected 
                         ? "bg-indigo-50 dark:bg-indigo-900/30 border-indigo-500 text-indigo-900 dark:text-indigo-300 shadow-md" 
@@ -475,7 +439,7 @@
                 `;
 
                 let rightSide = '';
-                if (isAnswerChecked) {
+                if (isAnswerChecked && !isExamMode) {
                     if (isCorrect) rightSide = '<i class="fas fa-check-circle text-emerald-600 text-lg sm:text-xl"></i>';
                     else if (isSelected) rightSide = '<i class="fas fa-times-circle text-rose-600 text-lg sm:text-xl"></i>';
                 }
@@ -485,19 +449,19 @@
             });
 
             const actionBtn = document.getElementById('action-btn');
-            
-            // Clean classes to prevent stacking
             actionBtn.classList.remove('bg-indigo-600', 'hover:bg-indigo-700', 'bg-emerald-600', 'hover:bg-emerald-700', 'bg-rose-600', 'hover:bg-rose-700');
 
             if (!isAnswerChecked) {
-                actionBtn.innerText = 'Check Answer';
+                actionBtn.innerText = isExamMode ? 'Confirm Answer' : 'Check Answer';
                 actionBtn.disabled = selectedOption === null;
                 actionBtn.classList.add('bg-indigo-600', 'hover:bg-indigo-700');
             } else {
-                actionBtn.innerText = (currentIndex === questionsList.length - 1) ? 'Finish Quiz' : 'Next Question';
+                actionBtn.innerText = (currentIndex === questionsList.length - 1) ? 'Finish & Submit' : 'Next Question';
                 actionBtn.disabled = false;
                 
-                if (selectedOption === question.answer) {
+                if (isExamMode) {
+                    actionBtn.classList.add('bg-indigo-600', 'hover:bg-indigo-700');
+                } else if (selectedOption === question.answer) {
                     actionBtn.classList.add('bg-emerald-600', 'hover:bg-emerald-700');
                 } else {
                     actionBtn.classList.add('bg-rose-600', 'hover:bg-rose-700');
@@ -513,15 +477,22 @@
 
         function handleAction() {
             if (!isAnswerChecked) {
-                checkAnswer();
+                const question = questionsList[currentIndex];
+                const isCorrect = selectedOption === question.answer;
+                
+                if (userAnswers[currentIndex] === null) {
+                    userAnswers[currentIndex] = selectedOption;
+                    if (isCorrect) score++;
+                    updateStats();
+                }
+                
+                isAnswerChecked = true;
+                renderQuestion();
             } else {
-                // If the answer was incorrect, prompt for repetition
                 const currentQ = questionsList[currentIndex];
-                // userAnswers tracks what option index the user picked
-                const userPicked = userAnswers[currentIndex];
-                const isCorrect = userPicked === currentQ.answer;
+                const isCorrect = selectedOption === currentQ.answer;
 
-                if (!isCorrect) {
+                if (!isCorrect && !isExamMode && !repeatHandled[currentIndex]) {
                     showRepeatModal();
                 } else {
                     nextQuestion();
@@ -529,25 +500,17 @@
             }
         }
 
-        function checkAnswer() {
-            const question = questionsList[currentIndex];
-            const isCorrect = selectedOption === question.answer;
-            
-            // Only increment score if this is the FIRST attempt at this question ID?
-            // Simple logic: just count score based on current flow.
-            if (isCorrect) score++;
-            
-            userAnswers[currentIndex] = selectedOption;
-            isAnswerChecked = true;
-            renderQuestion();
-            updateStats();
-        }
-
         function nextQuestion() {
             if (currentIndex < questionsList.length - 1) {
                 currentIndex++;
-                selectedOption = null; // Reset selection for next Q
-                isAnswerChecked = false; // Reset check state
+                const savedAnswer = userAnswers[currentIndex];
+                if (savedAnswer !== null && savedAnswer !== undefined) {
+                    selectedOption = savedAnswer;
+                    isAnswerChecked = true;
+                } else {
+                    selectedOption = null;
+                    isAnswerChecked = false;
+                }
                 renderQuestion();
             } else {
                 finishQuiz();
@@ -558,9 +521,8 @@
         function prevQuestion() {
             if (currentIndex > 0) {
                 currentIndex--;
-                // Restore state for previous question
                 selectedOption = userAnswers[currentIndex]; 
-                isAnswerChecked = true; // Previous questions are always "checked"
+                isAnswerChecked = true; 
                 renderQuestion();
             }
         }
@@ -570,40 +532,31 @@
         }
 
         function confirmRepeat() {
-            // Clone current question to end of array
             const currentQ = questionsList[currentIndex];
-            // Create a copy to ensure unique object ref if needed, though simple push works
+            repeatHandled[currentIndex] = true;
+            
             questionsList.push(currentQ);
+            userAnswers.push(null); 
+            repeatHandled.push(false);
             
-            // Expand userAnswers to match new length
-            userAnswers.push(null);
-            
-            // Update counts UI
             document.getElementById('total-q-num').innerText = questionsList.length;
-            
-            // Close modal and proceed
             document.getElementById('repeat-modal').classList.add('hidden');
             nextQuestion();
         }
 
         function skipRepeat() {
+            repeatHandled[currentIndex] = true;
             document.getElementById('repeat-modal').classList.add('hidden');
             nextQuestion();
         }
 
         function updateStats() {
+            if (isExamMode) return;
             document.getElementById('score-display').innerText = score;
-            
-            // Remaining = Total (dynamic) - Current Index - 1 (if checked)
-            let remaining = questionsList.length - currentIndex;
-            if (isAnswerChecked) remaining -= 1;
-            if (remaining < 0) remaining = 0;
-            
+            const answeredCount = userAnswers.filter(a => a !== null).length;
+            const remaining = questionsList.length - answeredCount;
             document.getElementById('remaining-display').innerText = remaining;
-            
-            // Accuracy based on questions attempted so far
-            const attempted = currentIndex + (isAnswerChecked ? 1 : 0);
-            const accuracy = attempted > 0 ? Math.round((score / attempted) * 100) : 0;
+            const accuracy = answeredCount > 0 ? Math.round((score / answeredCount) * 100) : 0;
             document.getElementById('accuracy-display').innerText = `${accuracy}%`;
         }
 
@@ -612,10 +565,34 @@
             document.getElementById('quiz-container').classList.add('hidden');
             document.getElementById('results-screen').classList.remove('hidden');
             
-            document.getElementById('final-score').innerText = `${score} / ${questionsList.length}`;
+            const answeredCount = userAnswers.filter(a => a !== null).length;
+            const accuracy = answeredCount > 0 ? Math.round((score / answeredCount) * 100) : 0;
             
-            const accuracy = Math.round((score / questionsList.length) * 100);
+            document.getElementById('final-score').innerText = `${score} / ${questionsList.length}`;
             document.getElementById('final-accuracy').innerText = `${accuracy}%`;
+
+            const statusMsg = document.getElementById('exam-status-msg');
+            const resHeader = document.getElementById('results-header');
+            
+            if (isExamMode) {
+                statusMsg.classList.remove('hidden');
+                if (accuracy >= 80) {
+                    statusMsg.innerText = "Distinction! You demonstrated excellent proficiency under pressure.";
+                    statusMsg.className = "p-4 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 rounded-xl border border-emerald-200 dark:border-emerald-800 text-center text-sm font-bold";
+                    resHeader.className = "bg-emerald-600 dark:bg-emerald-500 p-6 sm:p-8 text-center text-white";
+                } else if (accuracy >= 60) {
+                    statusMsg.innerText = "Pass. You have a solid foundation, though some review is needed.";
+                    statusMsg.className = "p-4 bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400 rounded-xl border border-indigo-200 dark:border-indigo-800 text-center text-sm font-bold";
+                    resHeader.className = "bg-indigo-600 dark:bg-indigo-500 p-6 sm:p-8 text-center text-white";
+                } else {
+                    statusMsg.innerText = "Below Passing. We recommend revisiting the core principles of accuracy and structure.";
+                    statusMsg.className = "p-4 bg-rose-50 dark:bg-rose-900/20 text-rose-600 dark:text-rose-400 rounded-xl border border-rose-200 dark:border-rose-800 text-center text-sm font-bold";
+                    resHeader.className = "bg-rose-600 dark:bg-rose-500 p-6 sm:p-8 text-center text-white";
+                }
+            } else {
+                statusMsg.classList.add('hidden');
+                resHeader.className = "bg-indigo-600 dark:bg-indigo-500 p-6 sm:p-8 text-center text-white";
+            }
             
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
@@ -632,16 +609,7 @@
             }
         }
 
-        // Initialize: Show setup modal first
-        // No auto-init. Modal is visible by default in HTML structure (remove hidden there if needed, currently hidden).
-        // Actually, let's make sure modal is visible and main container is hidden on load.
-        // Script logic handles this.
         document.getElementById('setup-modal').classList.remove('hidden');
-        
     </script>
 </body>
 </html>
-
-
-
-
